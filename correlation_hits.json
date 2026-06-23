@@ -1,0 +1,152 @@
+[
+  {
+    "matched_ioc": "185.220.101.47",
+    "matched_field": "src_ip",
+    "ioc_type": "IPv4",
+    "source_feed": "AlienVault OTX",
+    "threat_name": "Tor Exit Node - C2",
+    "log_event": {
+      "_time": "2025-06-10T08:12:33Z",
+      "src_ip": "185.220.101.47",
+      "dest_ip": "10.0.0.5",
+      "action": "blocked",
+      "host": "fw-edge-01",
+      "event_type": "firewall"
+    },
+    "severity": "CRITICAL",
+    "action": "blocked",
+    "host": "fw-edge-01",
+    "detected_at": "2026-06-23T06:28:13.002715+00:00"
+  },
+  {
+    "matched_ioc": "45.142.212.100",
+    "matched_field": "dest_ip",
+    "ioc_type": "IPv4",
+    "source_feed": "AbuseIPDB",
+    "threat_name": "Malicious IP",
+    "log_event": {
+      "_time": "2025-06-10T08:15:01Z",
+      "src_ip": "10.0.0.22",
+      "dest_ip": "45.142.212.100",
+      "action": "allowed",
+      "host": "workstation-7",
+      "event_type": "firewall"
+    },
+    "severity": "HIGH",
+    "action": "allowed",
+    "host": "workstation-7",
+    "detected_at": "2026-06-23T06:28:13.002728+00:00"
+  },
+  {
+    "matched_ioc": "10.0.0.55",
+    "matched_field": "src_ip",
+    "ioc_type": "IPv4",
+    "source_feed": "AlienVault OTX",
+    "threat_name": "Internal Recon Detected",
+    "log_event": {
+      "_time": "2025-06-10T09:01:44Z",
+      "src_ip": "10.0.0.55",
+      "dest_ip": "10.0.0.1",
+      "action": "allowed",
+      "host": "server-db-01",
+      "event_type": "network"
+    },
+    "severity": "HIGH",
+    "action": "allowed",
+    "host": "server-db-01",
+    "detected_at": "2026-06-23T06:28:13.002735+00:00"
+  },
+  {
+    "matched_ioc": "http://update-service.xyz/payload.exe",
+    "matched_field": "url",
+    "ioc_type": "URL",
+    "source_feed": "URLhaus",
+    "threat_name": "malware_download",
+    "log_event": {
+      "_time": "2025-06-10T09:22:10Z",
+      "url": "http://update-service.xyz/payload.exe",
+      "action": "allowed",
+      "host": "workstation-3",
+      "event_type": "proxy"
+    },
+    "severity": "MEDIUM",
+    "action": "allowed",
+    "host": "workstation-3",
+    "detected_at": "2026-06-23T06:28:13.002741+00:00"
+  },
+  {
+    "matched_ioc": "194.165.16.11",
+    "matched_field": "src_ip",
+    "ioc_type": "IPv4",
+    "source_feed": "AbuseIPDB",
+    "threat_name": "Malicious IP",
+    "log_event": {
+      "_time": "2025-06-10T10:05:55Z",
+      "src_ip": "194.165.16.11",
+      "dest_ip": "10.0.0.8",
+      "action": "blocked",
+      "host": "fw-edge-01",
+      "event_type": "firewall"
+    },
+    "severity": "HIGH",
+    "action": "blocked",
+    "host": "fw-edge-01",
+    "detected_at": "2026-06-23T06:28:13.002744+00:00"
+  },
+  {
+    "matched_ioc": "222.187.239.109",
+    "matched_field": "src_ip",
+    "ioc_type": "IPv4",
+    "source_feed": "AbuseIPDB",
+    "threat_name": "Malicious IP",
+    "log_event": {
+      "_time": "2025-06-10T10:45:30Z",
+      "src_ip": "222.187.239.109",
+      "dest_ip": "10.0.0.20",
+      "action": "blocked",
+      "host": "fw-edge-01",
+      "event_type": "firewall"
+    },
+    "severity": "HIGH",
+    "action": "blocked",
+    "host": "fw-edge-01",
+    "detected_at": "2026-06-23T06:28:13.002748+00:00"
+  },
+  {
+    "matched_ioc": "http://cdn-static.cf/files/rat.bin",
+    "matched_field": "url",
+    "ioc_type": "URL",
+    "source_feed": "URLhaus",
+    "threat_name": "malware_download",
+    "log_event": {
+      "_time": "2025-06-10T11:12:08Z",
+      "url": "http://cdn-static.cf/files/rat.bin",
+      "action": "blocked",
+      "host": "proxy-01",
+      "event_type": "proxy"
+    },
+    "severity": "LOW",
+    "action": "blocked",
+    "host": "proxy-01",
+    "detected_at": "2026-06-23T06:28:13.002752+00:00"
+  },
+  {
+    "matched_ioc": "91.92.248.105",
+    "matched_field": "src_ip",
+    "ioc_type": "IPv4",
+    "source_feed": "AbuseIPDB",
+    "threat_name": "Malicious IP",
+    "log_event": {
+      "_time": "2025-06-10T11:58:22Z",
+      "src_ip": "91.92.248.105",
+      "dest_ip": "10.0.0.15",
+      "action": "allowed",
+      "host": "fw-edge-02",
+      "event_type": "firewall"
+    },
+    "severity": "HIGH",
+    "action": "allowed",
+    "host": "fw-edge-02",
+    "detected_at": "2026-06-23T06:28:13.002755+00:00"
+  }
+]

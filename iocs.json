@@ -1,0 +1,115 @@
+[
+  {
+    "source": "AlienVault OTX",
+    "type": "IPv4",
+    "value": "185.220.101.47",
+    "threat_name": "Tor Exit Node - C2",
+    "tlp": "white",
+    "tags": [
+      "tor",
+      "c2",
+      "botnet"
+    ],
+    "fetched_at": "2026-06-23T06:28:13.001317+00:00"
+  },
+  {
+    "source": "AlienVault OTX",
+    "type": "domain",
+    "value": "malware-c2.ru",
+    "threat_name": "Emotet C2 Domain",
+    "tlp": "green",
+    "tags": [
+      "emotet",
+      "banking-trojan"
+    ],
+    "fetched_at": "2026-06-23T06:28:13.001423+00:00"
+  },
+  {
+    "source": "AlienVault OTX",
+    "type": "FileHash-SHA256",
+    "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "threat_name": "Ransomware Payload",
+    "tlp": "amber",
+    "tags": [
+      "ransomware",
+      "lockbit"
+    ],
+    "fetched_at": "2026-06-23T06:28:13.001429+00:00"
+  },
+  {
+    "source": "AbuseIPDB",
+    "type": "IPv4",
+    "value": "45.142.212.100",
+    "threat_name": "Malicious IP",
+    "confidence": 97,
+    "country": "RU",
+    "reports": 1843,
+    "fetched_at": "2026-06-23T06:28:13.001431+00:00"
+  },
+  {
+    "source": "AbuseIPDB",
+    "type": "IPv4",
+    "value": "194.165.16.11",
+    "threat_name": "Malicious IP",
+    "confidence": 100,
+    "country": "NL",
+    "reports": 5621,
+    "fetched_at": "2026-06-23T06:28:13.001434+00:00"
+  },
+  {
+    "source": "AbuseIPDB",
+    "type": "IPv4",
+    "value": "91.92.248.105",
+    "threat_name": "Malicious IP",
+    "confidence": 95,
+    "country": "DE",
+    "reports": 312,
+    "fetched_at": "2026-06-23T06:28:13.001437+00:00"
+  },
+  {
+    "source": "URLhaus",
+    "type": "URL",
+    "value": "http://update-service.xyz/payload.exe",
+    "threat_name": "malware_download",
+    "tags": [
+      "exe",
+      "dropper"
+    ],
+    "host": "update-service.xyz",
+    "fetched_at": "2026-06-23T06:28:13.001439+00:00"
+  },
+  {
+    "source": "URLhaus",
+    "type": "URL",
+    "value": "http://cdn-static.cf/files/rat.bin",
+    "threat_name": "malware_download",
+    "tags": [
+      "rat",
+      "asyncrat"
+    ],
+    "host": "cdn-static.cf",
+    "fetched_at": "2026-06-23T06:28:13.001442+00:00"
+  },
+  {
+    "source": "AlienVault OTX",
+    "type": "IPv4",
+    "value": "10.0.0.55",
+    "threat_name": "Internal Recon Detected",
+    "tlp": "red",
+    "tags": [
+      "lateral-movement",
+      "internal"
+    ],
+    "fetched_at": "2026-06-23T06:28:13.001445+00:00"
+  },
+  {
+    "source": "AbuseIPDB",
+    "type": "IPv4",
+    "value": "222.187.239.109",
+    "threat_name": "Malicious IP",
+    "confidence": 100,
+    "country": "CN",
+    "reports": 9204,
+    "fetched_at": "2026-06-23T06:28:13.001447+00:00"
+  }
+]

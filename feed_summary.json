@@ -1,0 +1,15 @@
+{
+  "last_run": "2026-06-23T06:28:13.001772+00:00",
+  "total_iocs": 10,
+  "by_source": {
+    "AlienVault OTX": 4,
+    "AbuseIPDB": 4,
+    "URLhaus": 2
+  },
+  "by_type": {
+    "IPv4": 6,
+    "URL": 2,
+    "domain": 1,
+    "hash": 1
+  }
+}
