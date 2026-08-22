@@ -1,1 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CTI Automation Platform | Mohamed Ibrahim H</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap');
+  :root{--bg:#090d13;--panel:#0d1420;--border:#1a2740;--accent:#00d4ff;--green:#00ff88;--red:#ff3860;--orange:#ff8c00;--yellow:#ffd600;--muted:#3a5270;--text:#c8d8e8;--dim:#6a8aaa;--mono:'Share Tech Mono',monospace;--sans:'Inter',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;min-height:100vh;overflow-x:hidden;}
+  header{background:var(--panel);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .logo{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:1px;}
+  .logo-icon{width:32px;height:32px;border:1.5px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 12px rgba(0,212,255,0.3);}
+  .header-right{display:flex;align-items:center;gap:24px;}
+  .live-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:1px;}
+  .live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 1.4s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
+  .clock{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:1px;}
+  .main{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
+  .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px 20px;position:relative;overflow:hidden;}
+  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+  .stat-card.blue::before{background:var(--accent);}
+  .stat-card.green::before{background:var(--green);}
+  .stat-card.red::before{background:var(--red);}
+  .stat-card.orange::before{background:var(--orange);}
+  .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-bottom:10px;font-family:var(--mono);}
+  .stat-value{font-family:var(--mono);font-size:32px;font-weight:600;line-height:1;margin-bottom:6px;}
+  .stat-card.blue .stat-value{color:var(--accent);}
+  .stat-card.green .stat-value{color:var(--green);}
+  .stat-card.red .stat-value{color:var(--red);}
+  .stat-card.orange .stat-value{color:var(--orange);}
+  .stat-sub{font-size:10px;color:var(--dim);}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .panel-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .panel-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);}
+  .panel-badge{font-family:var(--mono);font-size:10px;background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.25);border-radius:3px;padding:2px 8px;}
+  .panel-body{padding:16px 18px;}
+  .feed-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;}
+  .feed-table th{text-align:left;padding:6px 10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-size:10px;border-bottom:1px solid var(--border);}
+  .feed-table td{padding:8px 10px;border-bottom:1px solid rgba(26,39,64,0.5);vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .feed-table tr:hover td{background:rgba(0,212,255,0.03);}
+  .feed-table tr.new-row{animation:fadeIn 0.5s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+  .sev{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-family:var(--mono);letter-spacing:0.5px;font-weight:600;}
+  .sev-CRITICAL{background:rgba(255,56,96,0.15);color:var(--red);border:1px solid rgba(255,56,96,0.3);}
+  .sev-HIGH{background:rgba(255,140,0,0.15);color:var(--orange);border:1px solid rgba(255,140,0,0.3);}
+  .sev-MEDIUM{background:rgba(255,214,0,0.12);color:var(--yellow);border:1px solid rgba(255,214,0,0.3);}
+  .sev-LOW{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.25);}
+  .src-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:9px;font-family:var(--mono);letter-spacing:0.5px;}
+  .src-OTX{background:rgba(255,140,0,0.1);color:#ffa500;border:1px solid rgba(255,140,0,0.2);}
+  .src-ABUSE{background:rgba(255,56,96,0.1);color:#ff6080;border:1px solid rgba(255,56,96,0.2);}
+  .src-URLHAUS{background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2);}
+  .act-blocked{color:var(--red);}
+  .act-allowed{color:var(--orange);}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .bar-label{font-family:var(--mono);font-size:10px;color:var(--dim);width:70px;flex-shrink:0;}
+  .bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:3px;transition:width 0.8s ease;}
+  .bar-count{font-family:var(--mono);font-size:10px;color:var(--text);width:24px;text-align:right;}
+  .threat-map{background:rgba(0,10,20,0.6);border-radius:6px;height:180px;position:relative;overflow:hidden;}
+  .map-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(0,212,255,0.04) 0%,transparent 70%);}
+  .map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,39,64,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(26,39,64,0.4) 1px,transparent 1px);background-size:28px 28px;}
+  .map-dot{position:absolute;width:8px;height:8px;border-radius:50%;animation:ripple 2s infinite;}
+  @keyframes ripple{0%{box-shadow:0 0 0 0 rgba(255,56,96,0.6);}70%{box-shadow:0 0 0 10px rgba(255,56,96,0);}100%{box-shadow:0 0 0 0 rgba(255,56,96,0);}}
+  .terminal{background:#060a10;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-family:var(--mono);font-size:11px;height:140px;overflow-y:auto;line-height:1.7;}
+  .terminal::-webkit-scrollbar{width:4px;}
+  .terminal::-webkit-scrollbar-thumb{background:var(--muted);border-radius:2px;}
+  .log-time{color:var(--muted);}
+  .log-info{color:var(--accent);}
+  .log-warn{color:var(--orange);}
+  .log-alert{color:var(--red);}
+  .log-ok{color:var(--green);}
+  .area-stats{grid-column:span 4;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .area-feed{grid-column:span 3;}
+  .area-side{grid-column:span 1;display:flex;flex-direction:column;gap:16px;}
+  .area-bottom{grid-column:span 4;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .donut-wrap{display:flex;align-items:center;justify-content:center;gap:20px;padding:8px 0;}
+  .donut-legend{display:flex;flex-direction:column;gap:8px;}
+  .legend-item{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text);}
+  .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .author-tag{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-icon">🛡</div>
+    <span>CTI AUTOMATION PLATFORM</span>
+  </div>
+  <div class="header-right">
+    <span class="author-tag">Mohamed Ibrahim H | github.com/ibu-cyx0</span>
+    <div class="live-badge"><div class="live-dot"></div>LIVE FEED ACTIVE</div>
+    <div class="clock" id="clock">--:--:-- UTC</div>
+  </div>
+</header>
 
+<div class="main">
+  <div class="area-stats">
+    <div class="stat-card blue"><div class="stat-label">Total IOCs Collected</div><div class="stat-value" id="stat-iocs">0</div><div class="stat-sub">AlienVault · AbuseIPDB · URLhaus</div></div>
+    <div class="stat-card red"><div class="stat-label">Active Alerts</div><div class="stat-value" id="stat-alerts">0</div><div class="stat-sub">Correlation hits in last 24h</div></div>
+    <div class="stat-card orange"><div class="stat-label">Critical / High</div><div class="stat-value" id="stat-critical">0</div><div class="stat-sub">Requires immediate action</div></div>
+    <div class="stat-card green"><div class="stat-label">Feeds Online</div><div class="stat-value">3</div><div class="stat-sub">OTX · AbuseIPDB · URLhaus</div></div>
+  </div>
+
+  <div class="area-feed panel">
+    <div class="panel-header">
+      <span class="panel-title">⚡ Live Threat Feed</span>
+      <span class="panel-badge" id="feed-count">0 IOCs</span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="feed-table">
+        <thead><tr><th>Time</th><th>IOC Value</th><th>Type</th><th>Threat</th><th>Source</th><th>Severity</th><th>Action</th></tr></thead>
+        <tbody id="feed-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="area-side">
+    <div class="panel">
+      <div class="panel-header"><span class="panel-title">IOCs by Source</span></div>
+      <div class="panel-body">
+        <div class="bar-row"><span class="bar-label">OTX</span><div class="bar-track"><div class="bar-fill" id="bar-otx" style="width:0%;background:#ffa500;"></div></div><span class="bar-count" id="cnt-otx">0</span></div>
+        <div class="bar-row"><span class="bar-label">AbuseIPDB</span><div class="bar-track"><div class="bar-fill" id="bar-abuse" style="width:0%;background:#ff6080;"></div></div><span class="bar-count" id="cnt-abuse">0</span></div>
+        <div class="bar-row"><span class="bar-label">URLhaus</span><div class="bar-track"><div class="bar-fill" id="bar-url" style="width:0%;background:#00d4ff;"></div></div><span class="bar-count" id="cnt-url">0</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><span class="panel-title">Alert Severity</span></div>
+      <div class="panel-body">
+        <div class="donut-wrap">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="28" fill="none" stroke="#1a2740" stroke-width="12"/>
+            <circle id="d-critical" cx="40" cy="40" r="28" fill="none" stroke="#ff3860" stroke-width="12" stroke-dasharray="0 176" stroke-dashoffset="44" transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
+            <circle id="d-high" cx="40" cy="40" r="28" fill="none" stroke="#ff8c00" stroke-width="12" stroke-dasharray="0 176" stroke-dashoffset="44" transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
+            <circle id="d-medium" cx="40" cy="40" r="28" fill="none" stroke="#ffd600" stroke-width="12" stroke-dasharray="0 176" stroke-dashoffset="44" transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
+            <text x="40" y="44" text-anchor="middle" fill="#c8d8e8" font-family="Share Tech Mono" font-size="13" id="donut-center">0</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#ff3860"></div><span id="leg-crit">CRITICAL: 0</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ff8c00"></div><span id="leg-high">HIGH: 0</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffd600"></div><span id="leg-med">MEDIUM: 0</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#00ff88"></div><span id="leg-low">LOW: 0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="area-bottom">
+    <div class="panel">
+      <div class="panel-header"><span class="panel-title">🌐 Threat Origin Heatmap</span><span class="panel-badge">SIMULATED</span></div>
+      <div class="panel-body">
+        <div class="threat-map" id="threat-map">
+          <div class="map-bg"></div>
+          <div class="map-grid"></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><span class="panel-title">⬛ System Log</span><span class="panel-badge">LIVE</span></div>
+      <div class="panel-body">
+        <div class="terminal" id="terminal"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const IOCS=[
+  {time:"08:12:33",value:"185.220.101.47",type:"IPv4",threat:"Tor Exit Node C2",source:"OTX",sev:"CRITICAL",action:"blocked"},
+  {time:"08:15:01",value:"45.142.212.100",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"HIGH",action:"allowed"},
+  {time:"08:22:10",value:"malware-c2.ru",type:"domain",threat:"Emotet C2 Domain",source:"OTX",sev:"CRITICAL",action:"blocked"},
+  {time:"09:01:44",value:"10.0.0.55",type:"IPv4",threat:"Lateral Movement",source:"OTX",sev:"HIGH",action:"allowed"},
+  {time:"09:22:10",value:"update-service.xyz/payload.exe",type:"URL",threat:"Malware Download",source:"URLHAUS",sev:"HIGH",action:"allowed"},
+  {time:"10:05:55",value:"194.165.16.11",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"HIGH",action:"blocked"},
+  {time:"10:45:30",value:"222.187.239.109",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"MEDIUM",action:"blocked"},
+  {time:"11:12:08",value:"cdn-static.cf/rat.bin",type:"URL",threat:"AsyncRAT Dropper",source:"URLHAUS",sev:"CRITICAL",action:"blocked"},
+  {time:"11:58:22",value:"91.92.248.105",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"MEDIUM",action:"allowed"},
+  {time:"12:01:09",value:"e3b0c44298fc...",type:"SHA256",threat:"Ransomware Payload",source:"OTX",sev:"CRITICAL",action:"blocked"},
+];
+const MAP_DOTS=[{x:"15%",y:"30%",c:"RU"},{x:"48%",y:"25%",c:"DE"},{x:"55%",y:"22%",c:"NL"},{x:"72%",y:"35%",c:"CN"},{x:"20%",y:"55%",c:"US"},{x:"65%",y:"65%",c:"IN"},{x:"30%",y:"70%",c:"BR"},{x:"80%",y:"50%",c:"KR"}];
+let loaded=0;
+const sevC={CRITICAL:0,HIGH:0,MEDIUM:0,LOW:0};
+const srcC={OTX:0,ABUSE:0,URLHAUS:0};
+
+function updateClock(){const n=new Date();document.getElementById('clock').textContent=n.toUTCString().slice(17,25)+' UTC';}
+setInterval(updateClock,1000);updateClock();
+
+const terminal=document.getElementById('terminal');
+function log(msg,cls='log-info'){
+  const t=new Date().toUTCString().slice(17,25);
+  terminal.innerHTML+=`<div><span class="log-time">[${t}]</span> <span class="${cls}">${msg}</span></div>`;
+  terminal.scrollTop=terminal.scrollHeight;
+}
+
+function addRow(ioc){
+  const tbody=document.getElementById('feed-tbody');
+  const tr=document.createElement('tr');
+  tr.className='new-row';
+  tr.innerHTML=`<td style="color:var(--dim)">${ioc.time}</td><td style="color:var(--text);font-family:var(--mono)">${ioc.value}</td><td style="color:var(--dim)">${ioc.type}</td><td>${ioc.threat}</td><td><span class="src-badge src-${ioc.source}">${ioc.source==='OTX'?'AlienVault OTX':ioc.source==='ABUSE'?'AbuseIPDB':'URLhaus'}</span></td><td><span class="sev sev-${ioc.sev}">${ioc.sev}</span></td><td class="act-${ioc.action}">${ioc.action.toUpperCase()}</td>`;
+  tbody.insertBefore(tr,tbody.firstChild);
+  if(tbody.rows.length>10)tbody.deleteRow(tbody.rows.length-1);
+  loaded++;sevC[ioc.sev]++;srcC[ioc.source]++;
+  document.getElementById('stat-iocs').textContent=loaded;
+  document.getElementById('stat-alerts').textContent=loaded;
+  document.getElementById('stat-critical').textContent=sevC.CRITICAL+sevC.HIGH;
+  document.getElementById('feed-count').textContent=loaded+' IOCs';
+  const max=Math.max(...Object.values(srcC),1);
+  document.getElementById('bar-otx').style.width=(srcC.OTX/max*100)+'%';
+  document.getElementById('bar-abuse').style.width=(srcC.ABUSE/max*100)+'%';
+  document.getElementById('bar-url').style.width=(srcC.URLHAUS/max*100)+'%';
+  document.getElementById('cnt-otx').textContent=srcC.OTX;
+  document.getElementById('cnt-abuse').textContent=srcC.ABUSE;
+  document.getElementById('cnt-url').textContent=srcC.URLHAUS;
+  updateDonut();
+  const cls=ioc.sev==='CRITICAL'?'log-alert':ioc.sev==='HIGH'?'log-warn':'log-ok';
+  log(`[${ioc.sev}] ${ioc.value} — ${ioc.threat} (${ioc.action==='blocked'?'🔴 BLOCKED':'⚠️ ALLOWED'})`,cls);
+}
+
+function updateDonut(){
+  const total=Object.values(sevC).reduce((a,b)=>a+b,0)||1;
+  const circ=175.9;let offset=0;
+  function arc(id,n,col){const d=n/total*circ;const el=document.getElementById(id);el.style.stroke=col;el.setAttribute('stroke-dasharray',`${d} ${circ-d}`);el.setAttribute('stroke-dashoffset',-(offset-44));offset+=d;}
+  arc('d-critical',sevC.CRITICAL,'#ff3860');arc('d-high',sevC.HIGH,'#ff8c00');arc('d-medium',sevC.MEDIUM,'#ffd600');
+  document.getElementById('donut-center').textContent=total;
+  document.getElementById('leg-crit').textContent='CRITICAL: '+sevC.CRITICAL;
+  document.getElementById('leg-high').textContent='HIGH: '+sevC.HIGH;
+  document.getElementById('leg-med').textContent='MEDIUM: '+sevC.MEDIUM;
+  document.getElementById('leg-low').textContent='LOW: '+sevC.LOW;
+}
+
+const map=document.getElementById('threat-map');
+MAP_DOTS.forEach((d,i)=>{
+  const dot=document.createElement('div');dot.className='map-dot';
+  dot.style.cssText=`left:${d.x};top:${d.y};background:#ff3860;animation-delay:${i*0.4}s;`;
+  map.appendChild(dot);
+  const lbl=document.createElement('div');
+  lbl.style.cssText=`position:absolute;left:calc(${d.x} + 12px);top:${d.y};font-family:'Share Tech Mono',monospace;font-size:9px;color:#3a5270;`;
+  lbl.textContent=d.c;map.appendChild(lbl);
+});
+
+log('CTI Automation Platform v1.0 initialized','log-ok');
+log('Connecting to AlienVault OTX...','log-info');
+log('Connecting to AbuseIPDB...','log-info');
+log('Connecting to URLhaus...','log-info');
+log('Feed collection active. Correlating against Splunk...','log-ok');
+
+let idx=0;
+function stream(){
+  if(idx<IOCS.length){addRow(IOCS[idx++]);setTimeout(stream,900+Math.random()*600);}
+  else{log('Full cycle complete. Restarting in 30s...','log-info');setTimeout(()=>{idx=0;stream();},30000);}
+}
+setTimeout(stream,800);
+</script>
+</body>
+</html>
