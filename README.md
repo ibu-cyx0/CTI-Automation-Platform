@@ -209,6 +209,6 @@ EC-Council Certified SOC Analyst (CSA) | Splunk Core Certified User | Cisco Cybe
 
 ---
 
-## 📄 Licen
+## 📄 License
 
 MIT License — free to use, modify, and distribute.
