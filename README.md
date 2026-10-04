@@ -95,8 +95,8 @@ CTI-Automation-Platform/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/ibu-cyx0/cti-automation-platform
-cd cti-automation-platform
+git clone https://github.com/ibu-cyx0/CTI-Automation-Platform
+cd CTI-Automation-Platform
 ```
 
 ### 2. Install dependencies
@@ -125,7 +125,7 @@ python main.py
 
 ### 5. Open the Dashboard
 ```
-Open dashboard/index.html in your browser
+Open index.html in your browser
 ```
 
 ---
