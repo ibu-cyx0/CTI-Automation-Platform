@@ -70,20 +70,18 @@ Built to demonstrate **SOC Tier 2** and **CTI Analyst** level skills for enterpr
 ## 📁 Project Structure
 
 ```
-cti-platform/
-├── feeds/
-│   └── collector.py          # IOC collection from 3 threat feeds
-├── correlator/
-│   └── splunk_correlator.py  # Splunk REST API correlation engine
-├── dashboard/
-│   └── index.html            # Live dark-themed threat dashboard
-├── data/
-│   ├── iocs.json             # Collected IOCs (auto-generated)
-│   ├── correlation_hits.json # Alert matches (auto-generated)
-│   └── sample/
-│       └── sample_logs.json  # Sample log events for demo
-├── main.py                   # Main orchestrator
-├── requirements.txt          # Python dependencies
+CTI-Automation-Platform/
+├── collector.py                 # IOC collection from 3 threat feeds
+├── ioc_harvester.py             # IOC harvesting helper
+├── splunk_correlator.py         # Splunk REST API correlation engine
+├── main.py                      # Main orchestrator
+├── index.html                   # Live dark-themed threat dashboard
+├── cti_dashboard_preview.html   # Dashboard preview page
+├── iocs.json                    # Collected IOCs (auto-generated)
+├── correlation_hits.json        # Alert matches (auto-generated)
+├── feed_summary.json            # Feed summary data (auto-generated)
+├── requirements.txt             # Python dependencies
+├── LICENSE
 └── README.md
 ```
 
