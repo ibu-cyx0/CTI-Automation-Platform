@@ -182,7 +182,6 @@ index=proxy_logs
 - **AbuseIPDB API** — malicious IP blacklist
 - **URLhaus API** — active malware URL feed
 - **HTML/CSS/JS** — live threat intelligence dashboard
-- **Docker** (optional) — containerized deployment
 
 ---
 
