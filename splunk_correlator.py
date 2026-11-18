@@ -294,3 +294,6 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Correlation failed: {e}")
         logger.info("Tip: Make sure Splunk is running and env vars are set.")
+
+
+
