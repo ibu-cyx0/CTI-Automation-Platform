@@ -1,257 +1,1811 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CTI Automation Platform | Mohamed Ibrahim H</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap');
-  :root{--bg:#090d13;--panel:#0d1420;--border:#1a2740;--accent:#00d4ff;--green:#00ff88;--red:#ff3860;--orange:#ff8c00;--yellow:#ffd600;--muted:#3a5270;--text:#c8d8e8;--dim:#6a8aaa;--mono:'Share Tech Mono',monospace;--sans:'Inter',sans-serif;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;min-height:100vh;overflow-x:hidden;}
-  header{background:var(--panel);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-  .logo{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:1px;}
-  .logo-icon{width:32px;height:32px;border:1.5px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 12px rgba(0,212,255,0.3);}
-  .header-right{display:flex;align-items:center;gap:24px;}
-  .live-badge{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:1px;}
-  .live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 1.4s infinite;}
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.8);}}
-  .clock{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:1px;}
-  .main{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
-  .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px 20px;position:relative;overflow:hidden;}
-  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
-  .stat-card.blue::before{background:var(--accent);}
-  .stat-card.green::before{background:var(--green);}
-  .stat-card.red::before{background:var(--red);}
-  .stat-card.orange::before{background:var(--orange);}
-  .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-bottom:10px;font-family:var(--mono);}
-  .stat-value{font-family:var(--mono);font-size:32px;font-weight:600;line-height:1;margin-bottom:6px;}
-  .stat-card.blue .stat-value{color:var(--accent);}
-  .stat-card.green .stat-value{color:var(--green);}
-  .stat-card.red .stat-value{color:var(--red);}
-  .stat-card.orange .stat-value{color:var(--orange);}
-  .stat-sub{font-size:10px;color:var(--dim);}
-  .panel{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-  .panel-header{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-  .panel-title{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);}
-  .panel-badge{font-family:var(--mono);font-size:10px;background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.25);border-radius:3px;padding:2px 8px;}
-  .panel-body{padding:16px 18px;}
-  .feed-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;}
-  .feed-table th{text-align:left;padding:6px 10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-size:10px;border-bottom:1px solid var(--border);}
-  .feed-table td{padding:8px 10px;border-bottom:1px solid rgba(26,39,64,0.5);vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .feed-table tr:hover td{background:rgba(0,212,255,0.03);}
-  .feed-table tr.new-row{animation:fadeIn 0.5s ease;}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
-  .sev{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-family:var(--mono);letter-spacing:0.5px;font-weight:600;}
-  .sev-CRITICAL{background:rgba(255,56,96,0.15);color:var(--red);border:1px solid rgba(255,56,96,0.3);}
-  .sev-HIGH{background:rgba(255,140,0,0.15);color:var(--orange);border:1px solid rgba(255,140,0,0.3);}
-  .sev-MEDIUM{background:rgba(255,214,0,0.12);color:var(--yellow);border:1px solid rgba(255,214,0,0.3);}
-  .sev-LOW{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.25);}
-  .src-badge{display:inline-block;padding:2px 7px;border-radius:3px;font-size:9px;font-family:var(--mono);letter-spacing:0.5px;}
-  .src-OTX{background:rgba(255,140,0,0.1);color:#ffa500;border:1px solid rgba(255,140,0,0.2);}
-  .src-ABUSE{background:rgba(255,56,96,0.1);color:#ff6080;border:1px solid rgba(255,56,96,0.2);}
-  .src-URLHAUS{background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2);}
-  .act-blocked{color:var(--red);}
-  .act-allowed{color:var(--orange);}
-  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-  .bar-label{font-family:var(--mono);font-size:10px;color:var(--dim);width:70px;flex-shrink:0;}
-  .bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
-  .bar-fill{height:100%;border-radius:3px;transition:width 0.8s ease;}
-  .bar-count{font-family:var(--mono);font-size:10px;color:var(--text);width:24px;text-align:right;}
-  .threat-map{background:rgba(0,10,20,0.6);border-radius:6px;height:180px;position:relative;overflow:hidden;}
-  .map-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 50%,rgba(0,212,255,0.04) 0%,transparent 70%);}
-  .map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(26,39,64,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(26,39,64,0.4) 1px,transparent 1px);background-size:28px 28px;}
-  .map-dot{position:absolute;width:8px;height:8px;border-radius:50%;animation:ripple 2s infinite;}
-  @keyframes ripple{0%{box-shadow:0 0 0 0 rgba(255,56,96,0.6);}70%{box-shadow:0 0 0 10px rgba(255,56,96,0);}100%{box-shadow:0 0 0 0 rgba(255,56,96,0);}}
-  .terminal{background:#060a10;border:1px solid var(--border);border-radius:6px;padding:12px 14px;font-family:var(--mono);font-size:11px;height:140px;overflow-y:auto;line-height:1.7;}
-  .terminal::-webkit-scrollbar{width:4px;}
-  .terminal::-webkit-scrollbar-thumb{background:var(--muted);border-radius:2px;}
-  .log-time{color:var(--muted);}
-  .log-info{color:var(--accent);}
-  .log-warn{color:var(--orange);}
-  .log-alert{color:var(--red);}
-  .log-ok{color:var(--green);}
-  .area-stats{grid-column:span 4;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-  .area-feed{grid-column:span 3;}
-  .area-side{grid-column:span 1;display:flex;flex-direction:column;gap:16px;}
-  .area-bottom{grid-column:span 4;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .donut-wrap{display:flex;align-items:center;justify-content:center;gap:20px;padding:8px 0;}
-  .donut-legend{display:flex;flex-direction:column;gap:8px;}
-  .legend-item{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text);}
-  .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-  .author-tag{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTI Automation Platform — Threat Intelligence &amp; SIEM Correlation</title>
+  <meta name="description" content="Interactive SOC threat intelligence &amp; SIEM correlation console simulating automated AlienVault OTX, AbuseIPDB, and URLhaus ingestion with Splunk SPL &amp; Sentinel KQL triage." />
+  <meta property="og:title" content="CTI Automation Platform — Mohamed Ibrahim H" />
+  <meta property="og:description" content="Simulated SOC console demonstrating automated IOC deduplication, MITRE ATT&amp;CK mapping, STIX 2.1 export, and Splunk/KQL triage." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            canvas: '#070b14',
+            surface: '#0d1424',
+            elevated: '#121c30',
+            line: '#1e2c44',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background-color: #070b14;
+      color: #e2e8f0;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    html, body, * {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.82); }
+    }
+    .live-dot { animation: pulseDot 1.6s ease-in-out infinite; }
+    @keyframes rowSlide {
+      from { opacity: 0; transform: translateY(-6px); background-color: rgba(56, 189, 248, 0.14); }
+      to { opacity: 1; transform: translateY(0); background-color: transparent; }
+    }
+    .row-enter { animation: rowSlide 0.55s ease-out; }
+    @media (prefers-reduced-motion: reduce) {
+      .live-dot, .row-enter { animation: none !important; }
+    }
+    .map-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(13, 20, 36, 0.96);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: #f1f5f9;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+      z-index: 30;
+      display: none;
+      min-width: 155px;
+    }
+  </style>
 </head>
-<body>
-<header>
-  <div class="logo">
-    <div class="logo-icon">🛡</div>
-    <span>CTI AUTOMATION PLATFORM</span>
-  </div>
-  <div class="header-right">
-    <span class="author-tag">Mohamed Ibrahim H | github.com/ibu-cyx0</span>
-    <div class="live-badge"><div class="live-dot"></div>LIVE FEED ACTIVE</div>
-    <div class="clock" id="clock">--:--:-- UTC</div>
-  </div>
-</header>
+<body class="min-h-screen flex flex-col antialiased selection:bg-sky-500/30 selection:text-sky-200">
 
-<div class="main">
-  <div class="area-stats">
-    <div class="stat-card blue"><div class="stat-label">Total IOCs Collected</div><div class="stat-value" id="stat-iocs">0</div><div class="stat-sub">AlienVault · AbuseIPDB · URLhaus</div></div>
-    <div class="stat-card red"><div class="stat-label">Active Alerts</div><div class="stat-value" id="stat-alerts">0</div><div class="stat-sub">Correlation hits in last 24h</div></div>
-    <div class="stat-card orange"><div class="stat-label">Critical / High</div><div class="stat-value" id="stat-critical">0</div><div class="stat-sub">Requires immediate action</div></div>
-    <div class="stat-card green"><div class="stat-label">Feeds Online</div><div class="stat-value">3</div><div class="stat-sub">OTX · AbuseIPDB · URLhaus</div></div>
-  </div>
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur-md">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="h-8 w-8 rounded-lg bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400 shrink-0">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <h1 class="text-sm font-semibold tracking-tight text-slate-100 truncate">CTI Automation Platform</h1>
+            <span class="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/25">SIMULATED DEMO</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate hidden md:block">Mohamed Ibrahim H · UI Simulation of Python OTX / AbuseIPDB / URLhaus → Splunk Collector</p>
+        </div>
+      </div>
 
-  <div class="area-feed panel">
-    <div class="panel-header">
-      <span class="panel-title">⚡ Live Threat Feed</span>
-      <span class="panel-badge" id="feed-count">0 IOCs</span>
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="feed-table">
-        <thead><tr><th>Time</th><th>IOC Value</th><th>Type</th><th>Threat</th><th>Source</th><th>Severity</th><th>Action</th></tr></thead>
-        <tbody id="feed-tbody"></tbody>
-      </table>
-    </div>
-  </div>
+      <!-- View Tabs -->
+      <nav class="hidden lg:flex items-center gap-1 bg-canvas/80 p-1 rounded-lg border border-line" role="tablist" aria-label="Workspace Views">
+        <button data-tab="overview" role="tab" aria-selected="true" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition-colors bg-elevated text-sky-300 border border-sky-500/30">Live Threat Feed</button>
+        <button data-tab="rules" role="tab" aria-selected="false" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition-colors text-slate-400 hover:text-slate-200 border border-transparent">Splunk Rules</button>
+        <button data-tab="pipeline" role="tab" aria-selected="false" class="tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition-colors text-slate-400 hover:text-slate-200 border border-transparent">Pipeline &amp; Lookup</button>
+      </nav>
 
-  <div class="area-side">
-    <div class="panel">
-      <div class="panel-header"><span class="panel-title">IOCs by Source</span></div>
-      <div class="panel-body">
-        <div class="bar-row"><span class="bar-label">OTX</span><div class="bar-track"><div class="bar-fill" id="bar-otx" style="width:0%;background:#ffa500;"></div></div><span class="bar-count" id="cnt-otx">0</span></div>
-        <div class="bar-row"><span class="bar-label">AbuseIPDB</span><div class="bar-track"><div class="bar-fill" id="bar-abuse" style="width:0%;background:#ff6080;"></div></div><span class="bar-count" id="cnt-abuse">0</span></div>
-        <div class="bar-row"><span class="bar-label">URLhaus</span><div class="bar-track"><div class="bar-fill" id="bar-url" style="width:0%;background:#00d4ff;"></div></div><span class="bar-count" id="cnt-url">0</span></div>
+      <!-- Right Controls -->
+      <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <a href="https://github.com/ibu-cyx0/CTI-Automation-Platform" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-elevated hover:bg-slate-800 border border-line text-slate-200 transition-colors" title="View Python collector source code on GitHub">
+          <i data-lucide="github" class="w-3.5 h-3.5 text-slate-300"></i>
+          <span>Source</span>
+        </a>
+        <div id="stream-pill" class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 font-mono text-[11px]">
+          <span id="stream-dot" class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span>
+          <span id="stream-label">SIM SYNC</span>
+        </div>
+        <button id="btn-toggle-stream" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-elevated hover:bg-slate-800 border border-line text-slate-200 transition-colors" title="Pause or resume simulated feed ingestion">
+          <i data-lucide="pause" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span class="hidden sm:inline" id="btn-toggle-stream-text">Pause</span>
+        </button>
+        <button id="btn-ingest-now" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/35 text-sky-300 transition-colors" title="Simulate ingesting next IOC from threat feed">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Pull IOC</span>
+        </button>
+        <div class="hidden xl:block font-mono text-xs text-slate-400 pl-2 border-l border-line" id="utc-clock">--:--:-- UTC</div>
       </div>
     </div>
-    <div class="panel">
-      <div class="panel-header"><span class="panel-title">Alert Severity</span></div>
-      <div class="panel-body">
-        <div class="donut-wrap">
-          <svg width="80" height="80" viewBox="0 0 80 80">
-            <circle cx="40" cy="40" r="28" fill="none" stroke="#1a2740" stroke-width="12"/>
-            <circle id="d-critical" cx="40" cy="40" r="28" fill="none" stroke="#ff3860" stroke-width="12" stroke-dasharray="0 176" stroke-dashoffset="44" transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
-            <circle id="d-high" cx="40" cy="40" r="28" fill="none" stroke="#ff8c00" stroke-width="12" stroke-dasharray="0 176" stroke-dashoffset="44" transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
-            <circle id="d-medium" cx="40" cy="40" r="28" fill="none" stroke="#ffd600" stroke-width="12" stroke-dasharray="0 176" stroke-dashoffset="44" transform="rotate(-90 40 40)" style="transition:stroke-dasharray 1s ease"/>
-            <text x="40" y="44" text-anchor="middle" fill="#c8d8e8" font-family="Share Tech Mono" font-size="13" id="donut-center">0</text>
-          </svg>
-          <div class="donut-legend">
-            <div class="legend-item"><div class="legend-dot" style="background:#ff3860"></div><span id="leg-crit">CRITICAL: 0</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ff8c00"></div><span id="leg-high">HIGH: 0</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ffd600"></div><span id="leg-med">MEDIUM: 0</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#00ff88"></div><span id="leg-low">LOW: 0</span></div>
+
+    <!-- Mobile Tab Bar -->
+    <div class="lg:hidden border-t border-line px-4 py-2 flex items-center gap-1.5 overflow-x-auto bg-surface">
+      <button data-tab="overview" class="tab-btn-mobile px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap bg-elevated text-sky-300 border border-sky-500/30">Live Threat Feed</button>
+      <button data-tab="rules" class="tab-btn-mobile px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap text-slate-400 border border-transparent">Splunk Rules</button>
+      <button data-tab="pipeline" class="tab-btn-mobile px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap text-slate-400 border border-transparent">Pipeline &amp; Lookup</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-5 space-y-5">
+
+    <!-- VIEW 1: OVERVIEW & LIVE THREAT FEED -->
+    <section id="view-overview" class="space-y-5">
+
+      <!-- KPI Strip -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="rounded-xl bg-surface border border-line p-4 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Unique IOCs Indexed</span>
+            <span class="p-1.5 rounded-md bg-sky-500/10 text-sky-400"><i data-lucide="database" class="w-4 h-4"></i></span>
+          </div>
+          <div class="flex items-baseline gap-2.5">
+            <span id="kpi-total-iocs" class="text-3xl font-mono font-semibold text-slate-50">0</span>
+            <span id="kpi-dedup-rate" class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">RFC 5737 Demo</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1.5">AlienVault OTX · AbuseIPDB · URLhaus</p>
+        </div>
+
+        <div class="rounded-xl bg-surface border border-line p-4 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Splunk Correlation Hits</span>
+            <span class="p-1.5 rounded-md bg-indigo-500/10 text-indigo-400"><i data-lucide="activity" class="w-4 h-4"></i></span>
+          </div>
+          <div class="flex items-baseline gap-2.5">
+            <span id="kpi-splunk-hits" class="text-3xl font-mono font-semibold text-slate-50">0</span>
+            <span id="kpi-blocked-ratio" class="text-[11px] font-mono text-sky-300 bg-sky-500/10 px-1.5 py-0.5 rounded">0% blocked</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1.5">Excludes closed false positives</p>
+        </div>
+
+        <div class="rounded-xl bg-surface border border-line p-4 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Open Critical / High</span>
+            <span class="p-1.5 rounded-md bg-rose-500/10 text-rose-400"><i data-lucide="flame" class="w-4 h-4"></i></span>
+          </div>
+          <div class="flex items-baseline gap-2.5">
+            <span id="kpi-open-crit" class="text-3xl font-mono font-semibold text-rose-400">0</span>
+            <span class="text-[11px] font-mono text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded">Target SLA &lt; 15m</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1.5" id="kpi-escalated-sub">0 escalated to Tier 2 · 0 false positives</p>
+        </div>
+
+        <div class="rounded-xl bg-surface border border-line p-4 relative overflow-hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Active Splunk Rules</span>
+            <span class="p-1.5 rounded-md bg-emerald-500/10 text-emerald-400"><i data-lucide="radio" class="w-4 h-4"></i></span>
+          </div>
+          <div class="flex items-baseline gap-2.5">
+            <span id="kpi-active-rules" class="text-3xl font-mono font-semibold text-emerald-400">6 / 6</span>
+            <span class="text-[11px] font-mono text-slate-300 bg-elevated px-1.5 py-0.5 rounded border border-line">SPL</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1.5">Simulated REST correlation schedule</p>
+        </div>
+      </div>
+
+      <!-- Main Workspace Grid: Live Threat Feed (Left 8) + Analytics (Right 4) -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
+
+        <!-- Live Threat Feed Panel -->
+        <div class="xl:col-span-8 rounded-xl bg-surface border border-line flex flex-col overflow-hidden">
+          <div class="px-4 py-3 border-b border-line flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <i data-lucide="zap" class="w-4 h-4 text-sky-400"></i>
+              <h2 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-100">Simulated Threat Intelligence Feed</h2>
+              <span id="table-count-badge" class="px-2 py-0.5 rounded-full text-[11px] font-mono bg-elevated text-sky-300 border border-line">0 shown</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="btn-defang" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-elevated hover:bg-slate-800 border border-line text-slate-300 transition-colors" title="Toggle safe defanged notation ([.]) for IOCs">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                <span id="defang-label">Defang: ON</span>
+              </button>
+              <button id="btn-export-csv" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-elevated hover:bg-slate-800 border border-line text-slate-300 transition-colors">
+                <i data-lucide="download" class="w-3.5 h-3.5 text-slate-400"></i> CSV
+              </button>
+              <button id="btn-export-stix" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-elevated hover:bg-slate-800 border border-line text-slate-300 transition-colors">
+                <i data-lucide="file-json" class="w-3.5 h-3.5 text-slate-400"></i> STIX 2.1
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter & Search Bar -->
+          <div class="px-4 py-2.5 border-b border-line bg-canvas/50 flex flex-wrap items-center gap-2.5">
+            <div class="relative flex-1 min-w-[200px]">
+              <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+              <input id="filter-search" type="text" placeholder="Search IOC (raw or defanged), threat, MITRE ID..." class="w-full pl-8 pr-3 py-1.5 rounded-md bg-surface border border-line text-xs text-slate-100 placeholder-slate-400 focus:outline-none focus:border-sky-500/60" />
+            </div>
+            <div class="flex items-center gap-1 flex-wrap" id="sev-pills">
+              <button data-sev="ALL" class="sev-pill px-2.5 py-1 rounded text-[11px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/40">ALL</button>
+              <button data-sev="CRITICAL" class="sev-pill px-2.5 py-1 rounded text-[11px] font-mono bg-surface text-slate-300 border border-line hover:text-rose-300">CRITICAL</button>
+              <button data-sev="HIGH" class="sev-pill px-2.5 py-1 rounded text-[11px] font-mono bg-surface text-slate-300 border border-line hover:text-amber-300">HIGH</button>
+              <button data-sev="MEDIUM" class="sev-pill px-2.5 py-1 rounded text-[11px] font-mono bg-surface text-slate-300 border border-line hover:text-yellow-300">MEDIUM</button>
+              <button data-sev="LOW" class="sev-pill px-2.5 py-1 rounded text-[11px] font-mono bg-surface text-slate-300 border border-line hover:text-emerald-300">LOW</button>
+            </div>
+            <select id="filter-source" class="px-2.5 py-1.5 rounded-md bg-surface border border-line text-xs text-slate-200 focus:outline-none focus:border-sky-500/60">
+              <option value="ALL">All Sources</option>
+              <option value="OTX">AlienVault OTX</option>
+              <option value="ABUSE">AbuseIPDB</option>
+              <option value="URLHAUS">URLhaus</option>
+              <option value="MANUAL">Manual Lookup</option>
+            </select>
+            <select id="filter-status" class="px-2.5 py-1.5 rounded-md bg-surface border border-line text-xs text-slate-200 focus:outline-none focus:border-sky-500/60">
+              <option value="ALL">All Status</option>
+              <option value="OPEN">Open / Allowed</option>
+              <option value="BLOCKED">Blocked</option>
+              <option value="ESCALATED">Escalated (T2)</option>
+              <option value="FP">False Positive</option>
+            </select>
+          </div>
+
+          <!-- Feed Table -->
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-elevated/95 border-b border-line text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                <tr>
+                  <th class="py-2.5 px-2.5">Time</th>
+                  <th class="py-2.5 px-2.5">IOC Indicator</th>
+                  <th class="py-2.5 px-2.5">Threat &amp; MITRE ATT&amp;CK</th>
+                  <th class="py-2.5 px-2.5">Source</th>
+                  <th class="py-2.5 px-2.5">Severity</th>
+                  <th class="py-2.5 px-2.5 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody id="feed-tbody" class="divide-y divide-line/60 text-xs"></tbody>
+            </table>
+          </div>
+
+          <div class="px-4 py-2.5 border-t border-line bg-canvas/40 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+            <span>Click or press Enter on any row to inspect SPL/KQL queries &amp; triage actions.</span>
+            <div class="flex items-center gap-2 font-mono">
+              <button id="btn-prev-page" type="button" class="px-2 py-0.5 rounded bg-elevated hover:bg-slate-800 border border-line text-slate-300 disabled:opacity-40">Prev</button>
+              <span id="page-indicator" class="text-slate-300">Page 1 / 1</span>
+              <button id="btn-next-page" type="button" class="px-2 py-0.5 rounded bg-elevated hover:bg-slate-800 border border-line text-slate-300 disabled:opacity-40">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Analytics Column -->
+        <div class="xl:col-span-4 flex flex-col gap-5">
+          <!-- Correlation Velocity Chart -->
+          <div class="rounded-xl bg-surface border border-line p-4 flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">Splunk Correlation Velocity</h3>
+                <p class="text-[11px] text-slate-400">Simulated telemetry hits across last 12h</p>
+              </div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-elevated text-slate-300 border border-line">DEMO</span>
+            </div>
+            <div class="relative h-44 w-full">
+              <canvas id="velocityChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Severity & Source Distribution -->
+          <div class="rounded-xl bg-surface border border-line p-4 flex-1 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-200">Severity &amp; Feed Breakdown</h3>
+                <p class="text-[11px] text-slate-400">Distribution across active threat feeds</p>
+              </div>
+              <span id="chart-total-label" class="text-[11px] font-mono text-slate-400">0 IOCs</span>
+            </div>
+            <div class="grid grid-cols-2 gap-4 items-center my-auto">
+              <div class="relative h-40">
+                <canvas id="severityChart"></canvas>
+              </div>
+              <div class="space-y-3 font-mono text-xs" id="source-bars">
+                <div>
+                  <div class="flex justify-between text-[11px] mb-1"><span class="text-amber-300">AlienVault OTX</span><span id="cnt-otx" class="text-slate-300">0</span></div>
+                  <div class="h-1.5 bg-canvas rounded-full overflow-hidden"><div id="bar-otx" class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width:0%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px] mb-1"><span class="text-rose-300">AbuseIPDB</span><span id="cnt-abuse" class="text-slate-300">0</span></div>
+                  <div class="h-1.5 bg-canvas rounded-full overflow-hidden"><div id="bar-abuse" class="h-full bg-rose-400 rounded-full transition-all duration-500" style="width:0%"></div></div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-[11px] mb-1"><span class="text-sky-300">URLhaus</span><span id="cnt-urlhaus" class="text-slate-300">0</span></div>
+                  <div class="h-1.5 bg-canvas rounded-full overflow-hidden"><div id="bar-urlhaus" class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width:0%"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-4 gap-2 pt-3 border-t border-line font-mono text-center">
+              <div class="rounded-md bg-canvas/70 border border-line py-1.5">
+                <div class="text-[11px] text-rose-400">CRIT</div>
+                <div id="sev-cnt-crit" class="text-xs font-semibold text-slate-100 mt-0.5">0</div>
+              </div>
+              <div class="rounded-md bg-canvas/70 border border-line py-1.5">
+                <div class="text-[11px] text-amber-400">HIGH</div>
+                <div id="sev-cnt-high" class="text-xs font-semibold text-slate-100 mt-0.5">0</div>
+              </div>
+              <div class="rounded-md bg-canvas/70 border border-line py-1.5">
+                <div class="text-[11px] text-yellow-400">MED</div>
+                <div id="sev-cnt-med" class="text-xs font-semibold text-slate-100 mt-0.5">0</div>
+              </div>
+              <div class="rounded-md bg-canvas/70 border border-line py-1.5">
+                <div class="text-[11px] text-emerald-400">LOW</div>
+                <div id="sev-cnt-low" class="text-xs font-semibold text-slate-100 mt-0.5">0</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="area-bottom">
-    <div class="panel">
-      <div class="panel-header"><span class="panel-title">🌐 Threat Origin Heatmap</span><span class="panel-badge">SIMULATED</span></div>
-      <div class="panel-body">
-        <div class="threat-map" id="threat-map">
-          <div class="map-bg"></div>
-          <div class="map-grid"></div>
+      <!-- Full-Width D3 Vector Threat Origin Map -->
+      <div class="rounded-xl bg-surface border border-line overflow-hidden flex flex-col">
+        <div class="px-4 py-3 border-b border-line flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
+            <h3 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-100">Simulated Threat Origin Map</h3>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-elevated text-slate-300 border border-line">LAB GEO-IP</span>
+        </div>
+        <div class="relative bg-canvas/60 h-[340px] w-full overflow-hidden" id="world-map-container">
+          <svg id="world-map-svg" class="w-full h-full"></svg>
+          <div id="map-tooltip" class="map-tooltip"></div>
         </div>
       </div>
+
+      <!-- Full-Width Splunk REST API & Audit Log -->
+      <div class="rounded-xl bg-surface border border-line overflow-hidden flex flex-col">
+        <div class="px-4 py-3 border-b border-line flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i>
+            <h3 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-100">Splunk REST &amp; Audit Log</h3>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button data-logfilter="ALL" class="log-filter-btn px-2 py-0.5 rounded text-[11px] font-mono bg-sky-500/20 text-sky-300 border border-sky-500/35">ALL</button>
+            <button data-logfilter="ALERT" class="log-filter-btn px-2 py-0.5 rounded text-[11px] font-mono bg-elevated text-slate-300 border border-line">ALERTS</button>
+            <button id="btn-clear-log" type="button" class="px-2 py-0.5 rounded text-[11px] font-mono bg-elevated hover:bg-slate-800 text-slate-300 border border-line">Clear</button>
+          </div>
+        </div>
+        <div id="telemetry-log" class="h-[210px] overflow-y-auto bg-[#050810] p-3.5 font-mono text-[11px] leading-relaxed space-y-1"></div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: SPLUNK CORRELATION RULES -->
+    <section id="view-rules" class="hidden space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 class="text-base font-semibold text-slate-100">Splunk Enterprise Correlation Rules</h2>
+          <p class="text-xs text-slate-400">Time-bounded SPL searches executed via Splunk REST API against threat intel lookup tables (toggling updates active rule count).</p>
+        </div>
+        <span id="active-rules-count" class="px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">6 / 6 Rules Active</span>
+      </div>
+      <div id="rules-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- VIEW 3: INGESTION PIPELINE & MANUAL IOC LOOKUP -->
+    <section id="view-pipeline" class="hidden space-y-5">
+      <!-- Architecture Flow -->
+      <div class="rounded-xl bg-surface border border-line p-5">
+        <h2 class="text-sm font-mono font-semibold uppercase tracking-wider text-slate-100 mb-4">CTI Ingestion &amp; Splunk Correlation Architecture</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-stretch">
+          <div class="rounded-lg bg-canvas border border-line p-4 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] font-mono text-amber-400 uppercase">Stage 01 · Collection</span>
+              <h3 class="text-sm font-semibold text-slate-100 mt-1">Multi-Feed REST APIs</h3>
+              <p class="text-xs text-slate-400 mt-1.5">Scheduled Python collectors pull pulses &amp; indicators from AlienVault OTX, AbuseIPDB, and URLhaus.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-line font-mono text-[11px] text-emerald-400">Python Collector Ready</div>
+          </div>
+          <div class="rounded-lg bg-canvas border border-line p-4 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] font-mono text-sky-400 uppercase">Stage 02 · Enrichment</span>
+              <h3 class="text-sm font-semibold text-slate-100 mt-1">Dedup &amp; Normalization</h3>
+              <p class="text-xs text-slate-400 mt-1.5">Deduplicates overlapping indicators, normalizes STIX 2.1 fields, attaches GeoIP and MITRE ATT&amp;CK IDs.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-line font-mono text-[11px] text-sky-300">STIX 2.1 Compliant</div>
+          </div>
+          <div class="rounded-lg bg-canvas border border-line p-4 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] font-mono text-indigo-400 uppercase">Stage 03 · Correlation</span>
+              <h3 class="text-sm font-semibold text-slate-100 mt-1">Splunk REST &amp; SPL</h3>
+              <p class="text-xs text-slate-400 mt-1.5">Pushes lookup CSV via Splunk REST API and matches against firewall, proxy, Sysmon, and DNS telemetry.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-line font-mono text-[11px] text-indigo-300">/services/search/jobs</div>
+          </div>
+          <div class="rounded-lg bg-canvas border border-line p-4 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] font-mono text-rose-400 uppercase">Stage 04 · Triage</span>
+              <h3 class="text-sm font-semibold text-slate-100 mt-1">Severity &amp; Escalation</h3>
+              <p class="text-xs text-slate-400 mt-1.5">Scores alerts (Critical/High/Medium/Low), logs containment actions, and routes verified hits to Tier-2 SOC.</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-line font-mono text-[11px] text-rose-300">Target SLA: &lt; 15 min</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manual IOC Lookup & Injection Form -->
+      <div class="rounded-xl bg-surface border border-line p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <div>
+            <h2 class="text-sm font-semibold text-slate-100">Manual IOC Validation &amp; Correlation Test</h2>
+            <p class="text-xs text-slate-400">Submit a valid IPv4, Domain, URL, or 64-char SHA256 hash to generate escaped SPL/KQL queries and inject into the simulated feed.</p>
+          </div>
+          <span class="text-[11px] font-mono text-amber-300 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/25">Strict Format Validation</span>
+        </div>
+        <form id="manual-ioc-form" class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+          <div class="md:col-span-4">
+            <label for="input-ioc-val" class="block text-[11px] font-mono text-slate-300 mb-1">IOC Value</label>
+            <input id="input-ioc-val" type="text" required placeholder="e.g. 198.51.100.42 or c2-demo.example" class="w-full px-3 py-2 rounded-md bg-canvas border border-line text-xs font-mono text-slate-100 placeholder-slate-400 focus:outline-none focus:border-sky-500" />
+          </div>
+          <div class="md:col-span-2">
+            <label for="input-ioc-type" class="block text-[11px] font-mono text-slate-300 mb-1">Type</label>
+            <select id="input-ioc-type" class="w-full px-3 py-2 rounded-md bg-canvas border border-line text-xs text-slate-100 focus:outline-none focus:border-sky-500">
+              <option value="IPv4">IPv4</option>
+              <option value="Domain">Domain</option>
+              <option value="URL">URL</option>
+              <option value="SHA256">SHA256</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label for="input-ioc-sev" class="block text-[11px] font-mono text-slate-300 mb-1">Severity</label>
+            <select id="input-ioc-sev" class="w-full px-3 py-2 rounded-md bg-canvas border border-line text-xs text-slate-100 focus:outline-none focus:border-sky-500">
+              <option value="CRITICAL">CRITICAL</option>
+              <option value="HIGH">HIGH</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="LOW">LOW</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label for="input-ioc-threat" class="block text-[11px] font-mono text-slate-300 mb-1">Threat Classification</label>
+            <input id="input-ioc-threat" type="text" value="Suspicious C2 Beacon" class="w-full px-3 py-2 rounded-md bg-canvas border border-line text-xs text-slate-100 focus:outline-none focus:border-sky-500" />
+          </div>
+          <div class="md:col-span-2">
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-md bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs transition-colors">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Correlate IOC
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- IOC Investigation Slide-Over Drawer -->
+  <div id="drawer-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-50 hidden transition-opacity"></div>
+  <aside id="ioc-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-ioc-title" class="fixed top-0 right-0 h-full w-full max-w-lg bg-surface border-l border-line z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="px-5 py-4 border-b border-line flex items-center justify-between bg-elevated/60">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2">
+          <span id="drawer-sev-badge" class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold">CRITICAL</span>
+          <span id="drawer-status-badge" class="px-2 py-0.5 rounded text-[11px] font-mono bg-canvas border border-line text-slate-300">BLOCKED</span>
+        </div>
+        <h3 id="drawer-ioc-title" class="font-mono text-sm font-semibold text-slate-100 mt-1.5 break-all">—</h3>
+      </div>
+      <button id="btn-close-drawer" type="button" class="p-1.5 rounded-md text-slate-400 hover:text-slate-100 hover:bg-slate-800" aria-label="Close investigation drawer">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
     </div>
-    <div class="panel">
-      <div class="panel-header"><span class="panel-title">⬛ System Log</span><span class="panel-badge">LIVE</span></div>
-      <div class="panel-body">
-        <div class="terminal" id="terminal"></div>
+
+    <div class="flex-1 overflow-y-auto p-5 space-y-5 text-xs">
+      <!-- Enrichment Metadata -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="rounded-lg bg-canvas border border-line p-3">
+          <span class="text-[11px] font-mono uppercase text-slate-400">Threat Family</span>
+          <p id="drawer-threat" class="text-slate-100 font-medium mt-1">—</p>
+        </div>
+        <div class="rounded-lg bg-canvas border border-line p-3">
+          <span class="text-[11px] font-mono uppercase text-slate-400">Feed Confidence</span>
+          <div class="flex items-center gap-2 mt-1">
+            <div class="flex-1 h-1.5 bg-elevated rounded-full overflow-hidden"><div id="drawer-conf-bar" class="h-full bg-rose-500 rounded-full" style="width:0%"></div></div>
+            <span id="drawer-conf-val" class="font-mono font-semibold text-slate-100">0%</span>
+          </div>
+        </div>
+        <div class="rounded-lg bg-canvas border border-line p-3">
+          <span class="text-[11px] font-mono uppercase text-slate-400">Origin / Lab ASN</span>
+          <p id="drawer-geo" class="text-slate-200 font-mono mt-1">—</p>
+        </div>
+        <div class="rounded-lg bg-canvas border border-line p-3">
+          <span class="text-[11px] font-mono uppercase text-slate-400">Matched Telemetry</span>
+          <p id="drawer-asset" class="text-slate-200 font-mono mt-1">—</p>
+        </div>
+      </div>
+
+      <!-- MITRE ATT&CK Card -->
+      <div class="rounded-lg bg-canvas border border-line p-3.5">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-sky-400">MITRE ATT&amp;CK Mapping</span>
+          <span id="drawer-mitre-id" class="font-mono text-[11px] px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30">T1071.001</span>
+        </div>
+        <p id="drawer-mitre-tactic" class="text-slate-200 font-medium">—</p>
+        <p id="drawer-mitre-desc" class="text-slate-400 mt-1 leading-relaxed">—</p>
+      </div>
+
+      <!-- Splunk SPL / Sentinel KQL Query Tabs -->
+      <div class="rounded-lg bg-[#050810] border border-line overflow-hidden">
+        <div class="px-3.5 py-2 border-b border-line flex items-center justify-between bg-elevated/50 gap-2">
+          <div class="flex items-center gap-1.5">
+            <button id="qtab-spl" type="button" class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/35">Splunk SPL</button>
+            <button id="qtab-kql" type="button" class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface text-slate-400 border border-line hover:text-slate-200">Sentinel KQL</button>
+          </div>
+          <button id="btn-copy-spl" type="button" class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-surface hover:bg-slate-800 border border-line text-slate-300">
+            <i data-lucide="copy" class="w-3 h-3"></i> Copy Query
+          </button>
+        </div>
+        <pre id="drawer-spl" class="p-3.5 font-mono text-[11px] text-emerald-300/95 overflow-x-auto whitespace-pre-wrap leading-relaxed"></pre>
+      </div>
+
+      <!-- Analyst Notes -->
+      <div class="rounded-lg bg-canvas border border-line p-3.5">
+        <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Analyst Triage Summary</span>
+        <p id="drawer-notes" class="text-slate-300 mt-1.5 leading-relaxed">—</p>
       </div>
     </div>
+
+    <!-- Drawer Triage Action Footer -->
+    <div class="p-4 border-t border-line bg-elevated/60 grid grid-cols-3 gap-2">
+      <button id="btn-action-block" type="button" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-md bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/35 text-rose-300 font-medium text-xs transition-colors">
+        <i data-lucide="shield-ban" class="w-3.5 h-3.5"></i> <span id="btn-action-block-label">Block IP</span>
+      </button>
+      <button id="btn-action-escalate" type="button" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/35 text-amber-300 font-medium text-xs transition-colors">
+        <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Tier 2
+      </button>
+      <button id="btn-action-fp" type="button" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/35 text-emerald-300 font-medium text-xs transition-colors">
+        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> False Pos
+      </button>
+    </div>
+  </aside>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2 px-4 py-2.5 rounded-lg bg-elevated border border-sky-500/40 text-xs font-medium text-slate-100 shadow-xl">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+    <span id="toast-msg">Copied to clipboard</span>
   </div>
-</div>
 
-<script>
-const IOCS=[
-  {time:"08:12:33",value:"185.220.101.47",type:"IPv4",threat:"Tor Exit Node C2",source:"OTX",sev:"CRITICAL",action:"blocked"},
-  {time:"08:15:01",value:"45.142.212.100",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"HIGH",action:"allowed"},
-  {time:"08:22:10",value:"malware-c2.ru",type:"domain",threat:"Emotet C2 Domain",source:"OTX",sev:"CRITICAL",action:"blocked"},
-  {time:"09:01:44",value:"10.0.0.55",type:"IPv4",threat:"Lateral Movement",source:"OTX",sev:"HIGH",action:"allowed"},
-  {time:"09:22:10",value:"update-service.xyz/payload.exe",type:"URL",threat:"Malware Download",source:"URLHAUS",sev:"HIGH",action:"allowed"},
-  {time:"10:05:55",value:"194.165.16.11",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"HIGH",action:"blocked"},
-  {time:"10:45:30",value:"222.187.239.109",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"MEDIUM",action:"blocked"},
-  {time:"11:12:08",value:"cdn-static.cf/rat.bin",type:"URL",threat:"AsyncRAT Dropper",source:"URLHAUS",sev:"CRITICAL",action:"blocked"},
-  {time:"11:58:22",value:"91.92.248.105",type:"IPv4",threat:"Malicious IP",source:"ABUSE",sev:"MEDIUM",action:"allowed"},
-  {time:"12:01:09",value:"e3b0c44298fc...",type:"SHA256",threat:"Ransomware Payload",source:"OTX",sev:"CRITICAL",action:"blocked"},
-];
-const MAP_DOTS=[{x:"15%",y:"30%",c:"RU"},{x:"48%",y:"25%",c:"DE"},{x:"55%",y:"22%",c:"NL"},{x:"72%",y:"35%",c:"CN"},{x:"20%",y:"55%",c:"US"},{x:"65%",y:"65%",c:"IN"},{x:"30%",y:"70%",c:"BR"},{x:"80%",y:"50%",c:"KR"}];
-let loaded=0;
-const sevC={CRITICAL:0,HIGH:0,MEDIUM:0,LOW:0};
-const srcC={OTX:0,ABUSE:0,URLHAUS:0};
+  <script>
+    // =========================================================================
+    // 1. SIMULATED CTI DATASET (RFC-5737 IPs, RFC-2606 .example Domains)
+    // =========================================================================
+    const INITIAL_IOCS = [
+      {
+        id: 'IOC-2401',
+        time: '08:12:33',
+        value: '198.51.100.47',
+        type: 'IPv4',
+        threat: 'Tor Exit Node — SSH Brute Force',
+        source: 'OTX',
+        confidence: 96,
+        sev: 'CRITICAL',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'DE',
+        countryName: 'Germany',
+        coords: [8.68, 50.11],
+        asn: 'Lab-ASN-DE (RFC 5737)',
+        asset: 'fw-edge-01 (47 hits)',
+        hits: 47,
+        mitreId: 'T1090.003',
+        mitreTactic: 'Command and Control · Multi-hop Proxy',
+        mitreDesc: 'Simulated adversary routing credential-stuffing traffic through anonymizing relay to obscure origin.',
+        notes: 'Matched against perimeter firewall deny logs on TCP/22. Automated block policy active via Splunk alert action.'
+      },
+      {
+        id: 'IOC-2402',
+        time: '08:19:04',
+        value: 'cdn-update-sync.example/stage2/loader.bin',
+        type: 'URL',
+        threat: 'AsyncRAT Payload Dropper',
+        source: 'URLHAUS',
+        confidence: 98,
+        sev: 'CRITICAL',
+        action: 'BLOCKED',
+        status: 'ESCALATED',
+        country: 'NL',
+        countryName: 'Netherlands',
+        coords: [4.90, 52.37],
+        asn: 'Lab-ASN-NL (Simulated)',
+        asset: 'proxy-dmz-02 (6 hits)',
+        hits: 6,
+        mitreId: 'T1105',
+        mitreTactic: 'Command and Control · Ingress Tool Transfer',
+        mitreDesc: 'Staging URL delivering obfuscated AsyncRAT payload observed in simulated phishing campaign.',
+        notes: 'Escalated to Tier 2 SOC for endpoint memory triage on workstation WKSTN-FIN-14.'
+      },
+      {
+        id: 'IOC-2403',
+        time: '08:27:41',
+        value: '203.0.113.100',
+        type: 'IPv4',
+        threat: 'Cobalt Strike C2 Beacon',
+        source: 'ABUSE',
+        confidence: 94,
+        sev: 'CRITICAL',
+        action: 'ALLOWED',
+        status: 'OPEN',
+        country: 'RU',
+        countryName: 'Russia',
+        coords: [37.61, 55.75],
+        asn: 'Lab-ASN-RU (RFC 5737)',
+        asset: 'proxy-corp-01 (19 hits)',
+        hits: 19,
+        mitreId: 'T1071.001',
+        mitreTactic: 'Command and Control · Web Protocols',
+        mitreDesc: 'Periodic HTTPS beaconing (60s jitter) to simulated C2 teamserver flagged with 94% AbuseIPDB score.',
+        notes: 'URGENT: Outbound HTTPS allowed by egress proxy. Immediate firewall block and host isolation recommended.'
+      },
+      {
+        id: 'IOC-2404',
+        time: '08:41:18',
+        value: 'invoice-portal-auth.example',
+        type: 'Domain',
+        threat: 'Credential Harvesting / Emotet',
+        source: 'OTX',
+        confidence: 91,
+        sev: 'HIGH',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'RU',
+        countryName: 'Russia',
+        coords: [30.33, 59.93],
+        asn: 'Lab-DNS-Registrar (RFC 2606)',
+        asset: 'dns-resolver-01 (12 hits)',
+        hits: 12,
+        mitreId: 'T1566.002',
+        mitreTactic: 'Initial Access · Spearphishing Link',
+        mitreDesc: 'Newly registered lookalike domain hosting credential-harvesting login form linked to OTX lab pulse.',
+        notes: 'Sinkholed at internal DNS resolver. Phishing email campaign reported by 2 users.'
+      },
+      {
+        id: 'IOC-2405',
+        time: '08:54:09',
+        value: '192.0.2.11',
+        type: 'IPv4',
+        threat: 'RDP Credential Stuffing',
+        source: 'ABUSE',
+        confidence: 89,
+        sev: 'HIGH',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'US',
+        countryName: 'United States',
+        coords: [-77.49, 39.04],
+        asn: 'Lab-ASN-US (RFC 5737)',
+        asset: 'fw-vpn-01 (83 hits)',
+        hits: 83,
+        mitreId: 'T1110.004',
+        mitreTactic: 'Credential Access · Credential Stuffing',
+        mitreDesc: 'High-velocity authentication bursts targeting external VPN and RDP gateways using leaked credential lists.',
+        notes: '83 failed attempts correlated in Splunk over 10 minutes; IP auto-blocked on edge firewall.'
+      },
+      {
+        id: 'IOC-2406',
+        time: '09:08:52',
+        value: '7d9a4c2f81e0b63d55a19f04c2e7b8a3d61409f2c8e1a7b53d90f4e2a6c1b8d3',
+        type: 'SHA256',
+        threat: 'LockBit 3.0 Lab Sample Hash',
+        source: 'OTX',
+        confidence: 99,
+        sev: 'CRITICAL',
+        action: 'BLOCKED',
+        status: 'ESCALATED',
+        country: 'RO',
+        countryName: 'Romania',
+        coords: [26.10, 44.43],
+        asn: 'Lab-ASN-RO (Simulated)',
+        asset: 'edr-endpoint-09 (2 hits)',
+        hits: 2,
+        mitreId: 'T1486',
+        mitreTactic: 'Impact · Data Encrypted for Impact',
+        mitreDesc: 'Synthetic lab file hash matched against OTX ransomware pulse during Sysmon EventCode 1 ingestion.',
+        notes: 'Quarantined by Defender EDR. Escalated to Tier 2 for lateral movement sweep across subnet.'
+      },
+      {
+        id: 'IOC-2407',
+        time: '09:16:20',
+        value: '203.0.113.109',
+        type: 'IPv4',
+        threat: 'Automated Port Scanner',
+        source: 'ABUSE',
+        confidence: 84,
+        sev: 'MEDIUM',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'CN',
+        countryName: 'China',
+        coords: [116.40, 39.90],
+        asn: 'Lab-ASN-CN (RFC 5737)',
+        asset: 'fw-edge-02 (114 hits)',
+        hits: 114,
+        mitreId: 'T1046',
+        mitreTactic: 'Discovery · Network Service Discovery',
+        mitreDesc: 'Sequential TCP SYN sweep across ports 22, 445, 3389, and 8080 from scanning infrastructure.',
+        notes: 'All probes dropped by default-deny perimeter ACL; logged for trend baseline.'
+      },
+      {
+        id: 'IOC-2408',
+        time: '09:29:45',
+        value: 'telemetry-patch.example/api/v2/drop.ps1',
+        type: 'URL',
+        threat: 'PowerShell Infostealer Script',
+        source: 'URLHAUS',
+        confidence: 92,
+        sev: 'HIGH',
+        action: 'ALLOWED',
+        status: 'OPEN',
+        country: 'SG',
+        countryName: 'Singapore',
+        coords: [103.82, 1.35],
+        asn: 'Lab-ASN-SG (Simulated)',
+        asset: 'proxy-dev-01 (3 hits)',
+        hits: 3,
+        mitreId: 'T1059.001',
+        mitreTactic: 'Execution · PowerShell',
+        mitreDesc: 'Encoded PowerShell stager hosted on ephemeral lab VPS attempting browser credential exfiltration.',
+        notes: 'Review proxy logs for source workstation and initiate containment if PowerShell execution is confirmed.'
+      },
+      {
+        id: 'IOC-2409',
+        time: '09:42:11',
+        value: '198.51.100.105',
+        type: 'IPv4',
+        threat: 'Web Vulnerability Probing',
+        source: 'ABUSE',
+        confidence: 76,
+        sev: 'MEDIUM',
+        action: 'ALLOWED',
+        status: 'OPEN',
+        country: 'NL',
+        countryName: 'Netherlands',
+        coords: [4.48, 51.92],
+        asn: 'Lab-ASN-NL (RFC 5737)',
+        asset: 'waf-prod-01 (31 hits)',
+        hits: 31,
+        mitreId: 'T1190',
+        mitreTactic: 'Initial Access · Exploit Public-Facing Application',
+        mitreDesc: 'Repeated HTTP GET probes targeting /.env, /wp-login.php, and Struts endpoints.',
+        notes: 'All probed paths returned HTTP 404. Candidate for rate-limit block rule.'
+      },
+      {
+        id: 'IOC-2410',
+        time: '09:55:03',
+        value: '192.0.2.22',
+        type: 'IPv4',
+        threat: 'Suspicious SMTP Relay',
+        source: 'OTX',
+        confidence: 68,
+        sev: 'LOW',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'BR',
+        countryName: 'Brazil',
+        coords: [-46.63, -23.55],
+        asn: 'Lab-ASN-BR (RFC 5737)',
+        asset: 'mail-gw-01 (9 hits)',
+        hits: 9,
+        mitreId: 'T1566.001',
+        mitreTactic: 'Initial Access · Spearphishing Attachment',
+        mitreDesc: 'Low-reputation SMTP relay attempting bulk spam delivery with malformed SPF headers.',
+        notes: 'Rejected at mail gateway via SPF/DMARC policy.'
+      }
+    ];
 
-function updateClock(){const n=new Date();document.getElementById('clock').textContent=n.toUTCString().slice(17,25)+' UTC';}
-setInterval(updateClock,1000);updateClock();
+    const STREAM_QUEUE = [
+      {
+        id: 'IOC-2411',
+        value: '198.51.100.44',
+        type: 'IPv4',
+        threat: 'Mirai Botnet Telnet Probe',
+        source: 'ABUSE',
+        confidence: 88,
+        sev: 'HIGH',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'IN',
+        countryName: 'India',
+        coords: [72.87, 19.07],
+        asn: 'Lab-ASN-IN (RFC 5737)',
+        asset: 'fw-iot-dmz (64 hits)',
+        hits: 64,
+        mitreId: 'T1110.001',
+        mitreTactic: 'Credential Access · Password Guessing',
+        mitreDesc: 'Automated IoT credential spray targeting TCP/23 and TCP/2323.',
+        notes: 'Dropped by DMZ firewall segment; zero successful handshakes.'
+      },
+      {
+        id: 'IOC-2412',
+        value: 'api-cloudsync-cdn.example/v1/beacon',
+        type: 'URL',
+        threat: 'Lumma Stealer C2 Endpoint',
+        source: 'URLHAUS',
+        confidence: 97,
+        sev: 'CRITICAL',
+        action: 'ALLOWED',
+        status: 'OPEN',
+        country: 'US',
+        countryName: 'United States',
+        coords: [-122.41, 37.77],
+        asn: 'Lab-CDN-US (Simulated)',
+        asset: 'proxy-corp-02 (4 hits)',
+        hits: 4,
+        mitreId: 'T1041',
+        mitreTactic: 'Exfiltration · Exfiltration Over C2 Channel',
+        mitreDesc: 'HTTP POST traffic carrying compressed zip archives to simulated exfiltration gate.',
+        notes: 'Requires immediate URL block and host triage on source endpoint.'
+      },
+      {
+        id: 'IOC-2413',
+        value: '203.0.113.92',
+        type: 'IPv4',
+        threat: 'SQL Injection Scanner',
+        source: 'OTX',
+        confidence: 81,
+        sev: 'MEDIUM',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'KR',
+        countryName: 'South Korea',
+        coords: [126.97, 37.56],
+        asn: 'Lab-ASN-KR (RFC 5737)',
+        asset: 'waf-prod-01 (22 hits)',
+        hits: 22,
+        mitreId: 'T1190',
+        mitreTactic: 'Initial Access · Exploit Public-Facing Application',
+        mitreDesc: 'Automated SQLi payload signatures detected in query string parameters.',
+        notes: 'Blocked by WAF OWASP CRS rule 942100.'
+      },
+      {
+        id: 'IOC-2414',
+        value: 'auth-sso-verify.example',
+        type: 'Domain',
+        threat: 'AiTM OAuth Phishing Kit',
+        source: 'OTX',
+        confidence: 95,
+        sev: 'CRITICAL',
+        action: 'BLOCKED',
+        status: 'BLOCKED',
+        country: 'DE',
+        countryName: 'Germany',
+        coords: [13.40, 52.52],
+        asn: 'Lab-ASN-DE (RFC 2606)',
+        asset: 'dns-resolver-02 (7 hits)',
+        hits: 7,
+        mitreId: 'T1556',
+        mitreTactic: 'Credential Access · Modify Authentication Process',
+        mitreDesc: 'Adversary-in-the-Middle reverse proxy domain impersonating corporate Microsoft 365 SSO.',
+        notes: 'DNS sinkhole applied; alert sent to Identity Operations.'
+      }
+    ];
 
-const terminal=document.getElementById('terminal');
-function log(msg,cls='log-info'){
-  const t=new Date().toUTCString().slice(17,25);
-  terminal.innerHTML+=`<div><span class="log-time">[${t}]</span> <span class="${cls}">${msg}</span></div>`;
-  terminal.scrollTop=terminal.scrollHeight;
-}
+    const SPLUNK_RULES = [
+      {
+        id: 'RULE-01',
+        name: 'CTI_Edge_Firewall_IOC_Match',
+        mitre: 'T1071.001 · C2',
+        severity: 'CRITICAL',
+        enabled: true,
+        hits24h: 149,
+        schedule: 'Every 5 min',
+        spl: `index=firewall earliest=-5m@m latest=@m action IN ("allowed","blocked")\n| lookup cti_iocs.csv indicator AS dest_ip OUTPUT threat_type, source, confidence, severity\n| where isnotnull(threat_type) AND confidence >= 85\n| stats count, values(action) AS actions, dc(src_ip) AS affected_hosts by dest_ip, threat_type, severity\n| sort -count`
+      },
+      {
+        id: 'RULE-02',
+        name: 'CTI_Proxy_Malicious_URL_Hit',
+        mitre: 'T1105 · Ingress Tool',
+        severity: 'CRITICAL',
+        enabled: true,
+        hits24h: 28,
+        schedule: 'Every 5 min',
+        spl: `index=proxy earliest=-5m@m latest=@m\n| eval url_norm=lower(url_domain . uri_path)\n| lookup urlhaus_feed.csv url AS url_norm OUTPUT threat_family, confidence\n| where isnotnull(threat_family)\n| table _time, src_ip, user, action, status, url_norm, threat_family\n| sort -_time`
+      },
+      {
+        id: 'RULE-03',
+        name: 'CTI_DNS_Lookalike_Sinkhole',
+        mitre: 'T1566.002 · Phishing',
+        severity: 'HIGH',
+        enabled: true,
+        hits24h: 19,
+        schedule: 'Every 10 min',
+        spl: `index=dns earliest=-10m@m latest=@m query_type IN ("A","AAAA")\n| lookup otx_domains.csv domain AS query OUTPUT pulse_name, severity\n| where isnotnull(pulse_name)\n| stats count, values(src_ip) AS clients by query, pulse_name, severity`
+      },
+      {
+        id: 'RULE-04',
+        name: 'CTI_AbuseIPDB_Auth_BruteForce',
+        mitre: 'T1110.004 · Credential Stuffing',
+        severity: 'HIGH',
+        enabled: true,
+        hits24h: 83,
+        schedule: 'Every 5 min',
+        spl: `index=auth earliest=-5m@m latest=@m status="failure"\n| stats count AS failed_logins, dc(user) AS target_users by src_ip\n| where failed_logins >= 15\n| lookup abuseipdb_cache.csv ip AS src_ip OUTPUT abuse_score, country\n| where abuse_score >= 80`
+      },
+      {
+        id: 'RULE-05',
+        name: 'CTI_Endpoint_Ransomware_Hash',
+        mitre: 'T1486 · Impact',
+        severity: 'CRITICAL',
+        enabled: true,
+        hits24h: 2,
+        schedule: 'Real-time',
+        spl: `index=sysmon earliest=-5m@m latest=@m EventCode=1\n| rex field=Hashes "SHA256=(?<sha256>[A-Fa-f0-9]{64})"\n| eval sha256=lower(sha256)\n| lookup otx_hashes.csv hash AS sha256 OUTPUT malware_family, severity\n| where isnotnull(malware_family)\n| table _time, host, User, Image, CommandLine, malware_family`
+      },
+      {
+        id: 'RULE-06',
+        name: 'CTI_PortScan_Recon_Threshold',
+        mitre: 'T1046 · Discovery',
+        severity: 'MEDIUM',
+        enabled: true,
+        hits24h: 114,
+        schedule: 'Every 15 min',
+        spl: `index=firewall earliest=-15m@m latest=@m action="blocked"\n| stats dc(dest_port) AS unique_ports, count by src_ip\n| where unique_ports >= 25\n| lookup abuseipdb_cache.csv ip AS src_ip OUTPUT abuse_score, asn`
+      }
+    ];
 
-function addRow(ioc){
-  const tbody=document.getElementById('feed-tbody');
-  const tr=document.createElement('tr');
-  tr.className='new-row';
-  tr.innerHTML=`<td style="color:var(--dim)">${ioc.time}</td><td style="color:var(--text);font-family:var(--mono)">${ioc.value}</td><td style="color:var(--dim)">${ioc.type}</td><td>${ioc.threat}</td><td><span class="src-badge src-${ioc.source}">${ioc.source==='OTX'?'AlienVault OTX':ioc.source==='ABUSE'?'AbuseIPDB':'URLhaus'}</span></td><td><span class="sev sev-${ioc.sev}">${ioc.sev}</span></td><td class="act-${ioc.action}">${ioc.action.toUpperCase()}</td>`;
-  tbody.insertBefore(tr,tbody.firstChild);
-  if(tbody.rows.length>10)tbody.deleteRow(tbody.rows.length-1);
-  loaded++;sevC[ioc.sev]++;srcC[ioc.source]++;
-  document.getElementById('stat-iocs').textContent=loaded;
-  document.getElementById('stat-alerts').textContent=loaded;
-  document.getElementById('stat-critical').textContent=sevC.CRITICAL+sevC.HIGH;
-  document.getElementById('feed-count').textContent=loaded+' IOCs';
-  const max=Math.max(...Object.values(srcC),1);
-  document.getElementById('bar-otx').style.width=(srcC.OTX/max*100)+'%';
-  document.getElementById('bar-abuse').style.width=(srcC.ABUSE/max*100)+'%';
-  document.getElementById('bar-url').style.width=(srcC.URLHAUS/max*100)+'%';
-  document.getElementById('cnt-otx').textContent=srcC.OTX;
-  document.getElementById('cnt-abuse').textContent=srcC.ABUSE;
-  document.getElementById('cnt-url').textContent=srcC.URLHAUS;
-  updateDonut();
-  const cls=ioc.sev==='CRITICAL'?'log-alert':ioc.sev==='HIGH'?'log-warn':'log-ok';
-  log(`[${ioc.sev}] ${ioc.value} — ${ioc.threat} (${ioc.action==='blocked'?'🔴 BLOCKED':'⚠️ ALLOWED'})`,cls);
-}
+    // =========================================================================
+    // 2. APPLICATION STATE & LOCALSTORAGE PERSISTENCE
+    // =========================================================================
+    const STORAGE_KEY = 'cti_platform_triage_v1';
 
-function updateDonut(){
-  const total=Object.values(sevC).reduce((a,b)=>a+b,0)||1;
-  const circ=175.9;let offset=0;
-  function arc(id,n,col){const d=n/total*circ;const el=document.getElementById(id);el.style.stroke=col;el.setAttribute('stroke-dasharray',`${d} ${circ-d}`);el.setAttribute('stroke-dashoffset',-(offset-44));offset+=d;}
-  arc('d-critical',sevC.CRITICAL,'#ff3860');arc('d-high',sevC.HIGH,'#ff8c00');arc('d-medium',sevC.MEDIUM,'#ffd600');
-  document.getElementById('donut-center').textContent=total;
-  document.getElementById('leg-crit').textContent='CRITICAL: '+sevC.CRITICAL;
-  document.getElementById('leg-high').textContent='HIGH: '+sevC.HIGH;
-  document.getElementById('leg-med').textContent='MEDIUM: '+sevC.MEDIUM;
-  document.getElementById('leg-low').textContent='LOW: '+sevC.LOW;
-}
+    function loadSavedStatuses() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    }
 
-const map=document.getElementById('threat-map');
-MAP_DOTS.forEach((d,i)=>{
-  const dot=document.createElement('div');dot.className='map-dot';
-  dot.style.cssText=`left:${d.x};top:${d.y};background:#ff3860;animation-delay:${i*0.4}s;`;
-  map.appendChild(dot);
-  const lbl=document.createElement('div');
-  lbl.style.cssText=`position:absolute;left:calc(${d.x} + 12px);top:${d.y};font-family:'Share Tech Mono',monospace;font-size:9px;color:#3a5270;`;
-  lbl.textContent=d.c;map.appendChild(lbl);
-});
+    function saveStatuses() {
+      try {
+        const map = {};
+        state.iocs.forEach(i => { map[i.id] = { status: i.status, action: i.action }; });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
+      } catch (e) {}
+    }
 
-log('CTI Automation Platform v1.0 initialized','log-ok');
-log('Connecting to AlienVault OTX...','log-info');
-log('Connecting to AbuseIPDB...','log-info');
-log('Connecting to URLhaus...','log-info');
-log('Feed collection active. Correlating against Splunk...','log-ok');
+    const savedMap = loadSavedStatuses();
 
-let idx=0;
-function stream(){
-  if(idx<IOCS.length){addRow(IOCS[idx++]);setTimeout(stream,900+Math.random()*600);}
-  else{log('Full cycle complete. Restarting in 30s...','log-info');setTimeout(()=>{idx=0;stream();},30000);}
-}
-setTimeout(stream,800);
-</script>
+    const state = {
+      iocs: INITIAL_IOCS.map(item => {
+        const saved = savedMap[item.id];
+        return saved ? { ...item, status: saved.status, action: saved.action } : { ...item };
+      }),
+      streamQueueIdx: 0,
+      streaming: true,
+      defang: true,
+      activeTab: 'overview',
+      selectedIocId: null,
+      drawerQueryLang: 'SPL',
+      lastFocusedEl: null,
+      filters: { search: '', sev: 'ALL', source: 'ALL', status: 'ALL' },
+      page: 1,
+      pageSize: 7,
+      logFilter: 'ALL',
+      logs: [],
+      rules: SPLUNK_RULES.map(r => ({ ...r })),
+      velocityData: [18, 24, 19, 31, 42, 36, 51, 46, 62, 58, 74, 81],
+      streamTimer: null,
+      worldTopo: null
+    };
+
+    let velocityChart = null;
+    let severityChart = null;
+    let toastTimer = null;
+
+    // =========================================================================
+    // 3. HELPERS, VALIDATION & ESCAPING
+    // =========================================================================
+    function utcNow() {
+      return new Date().toUTCString().slice(17, 25);
+    }
+
+    function formatIOC(val, type) {
+      if (!state.defang || type === 'SHA256') return val;
+      return val.replace(/^http/i, 'hxxp').replace(/\./g, '[.]');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escapeSplLiteral(str) {
+      return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    }
+
+    function escapeKqlLiteral(str) {
+      return String(str).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    }
+
+    function validateIOCInput(val, type) {
+      if (type === 'IPv4') {
+        return /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/.test(val);
+      }
+      if (type === 'Domain') {
+        return /^(?=.{3,253}$)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,63}$/.test(val);
+      }
+      if (type === 'URL') {
+        return /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/.test(val);
+      }
+      if (type === 'SHA256') {
+        return /^[a-fA-F0-9]{64}$/.test(val);
+      }
+      return false;
+    }
+
+    function generateUUIDv4() {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+      });
+    }
+
+    function csvCell(val) {
+      let s = String(val ?? '');
+      if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+      return `"${s.replace(/"/g, '""')}"`;
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      el.classList.remove('hidden');
+      el.classList.add('flex');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      }, 2800);
+    }
+
+    function copyText(text, label) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(label)).catch(() => fallbackCopy(text, label));
+      } else {
+        fallbackCopy(text, label);
+      }
+    }
+
+    function fallbackCopy(text, label) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast(label); } catch (e) { showToast('Copy unavailable'); }
+      document.body.removeChild(ta);
+    }
+
+    function addLog(level, msg) {
+      state.logs.push({ time: utcNow(), level, msg });
+      if (state.logs.length > 80) state.logs.shift();
+      renderLogs();
+    }
+
+    function buildSplQuery(ioc) {
+      const safeVal = escapeSplLiteral(ioc.value);
+      const safeSrc = escapeSplLiteral(ioc.source);
+      const safeMitre = escapeSplLiteral(ioc.mitreId);
+      const safeThreat = escapeSplLiteral(ioc.threat);
+      if (ioc.type === 'IPv4') {
+        return `index=firewall OR index=proxy earliest=-24h@h latest=now (src_ip="${safeVal}" OR dest_ip="${safeVal}")\n| stats count AS hits, values(action) AS actions, dc(dest_port) AS ports by src_ip, dest_ip\n| eval ioc_source="${safeSrc}", mitre="${safeMitre}"\n| sort -hits`;
+      }
+      if (ioc.type === 'SHA256') {
+        return `index=sysmon earliest=-24h@h latest=now EventCode=1\n| rex field=Hashes "SHA256=(?<sha256>[A-Fa-f0-9]{64})"\n| where lower(sha256)=lower("${safeVal}")\n| table _time, host, User, Image, ParentImage, CommandLine\n| eval threat="${safeThreat}", mitre="${safeMitre}"`;
+      }
+      return `index=proxy OR index=dns earliest=-24h@h latest=now "*${safeVal}*"\n| stats count AS hits, values(src_ip) AS endpoints, values(status) AS http_codes by host\n| eval ioc_source="${safeSrc}", mitre="${safeMitre}"\n| sort -hits`;
+    }
+
+    function buildKqlQuery(ioc) {
+      const safeVal = escapeKqlLiteral(ioc.value);
+      if (ioc.type === 'IPv4') {
+        return `DeviceNetworkEvents\n| where Timestamp > ago(24h)\n| where RemoteIP == "${safeVal}" or LocalIP == "${safeVal}"\n| summarize Hits=count(), Devices=make_set(DeviceName) by RemoteIP, RemotePort, ActionType\n| order by Hits desc`;
+      }
+      if (ioc.type === 'SHA256') {
+        return `DeviceProcessEvents\n| where Timestamp > ago(24h)\n| where SHA256 =~ "${safeVal}"\n| project Timestamp, DeviceName, AccountName, FileName, ProcessCommandLine, InitiatingProcessFileName`;
+      }
+      return `DeviceNetworkEvents\n| where Timestamp > ago(24h)\n| where RemoteUrl has "${safeVal}"\n| summarize Hits=count(), Devices=make_set(DeviceName) by RemoteUrl, ActionType\n| order by Hits desc`;
+    }
+
+    function sevBadgeClass(sev) {
+      if (sev === 'CRITICAL') return 'bg-rose-500/15 text-rose-300 border border-rose-500/35';
+      if (sev === 'HIGH') return 'bg-amber-500/15 text-amber-300 border border-amber-500/35';
+      if (sev === 'MEDIUM') return 'bg-yellow-500/15 text-yellow-300 border border-yellow-500/35';
+      return 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/35';
+    }
+
+    function sourceLabel(src) {
+      if (src === 'OTX') return { name: 'AlienVault OTX', cls: 'text-amber-300 bg-amber-500/10 border-amber-500/25' };
+      if (src === 'ABUSE') return { name: 'AbuseIPDB', cls: 'text-rose-300 bg-rose-500/10 border-rose-500/25' };
+      if (src === 'URLHAUS') return { name: 'URLhaus', cls: 'text-sky-300 bg-sky-500/10 border-sky-500/25' };
+      return { name: 'Manual', cls: 'text-indigo-300 bg-indigo-500/10 border-indigo-500/25' };
+    }
+
+    function statusBadge(status) {
+      if (status === 'BLOCKED') return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">BLOCKED</span>';
+      if (status === 'ESCALATED') return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-amber-500/15 text-amber-300 border border-amber-500/30">TIER-2 ESC</span>';
+      if (status === 'FP') return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-slate-700/60 text-slate-300 border border-slate-600">FALSE POS</span>';
+      return '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-rose-500/15 text-rose-300 border border-rose-500/35">ALLOWED · OPEN</span>';
+    }
+
+    function blockActionLabel(type) {
+      if (type === 'Domain') return 'Block Domain';
+      if (type === 'URL') return 'Block URL';
+      if (type === 'SHA256') return 'Quarantine Hash';
+      return 'Block IP';
+    }
+
+    // =========================================================================
+    // 4. RENDERING
+    // =========================================================================
+    function getFilteredIOCs() {
+      const q = state.filters.search.trim().toLowerCase();
+      return state.iocs.filter(item => {
+        if (state.filters.sev !== 'ALL' && item.sev !== state.filters.sev) return false;
+        if (state.filters.source !== 'ALL' && item.source !== state.filters.source) return false;
+        if (state.filters.status !== 'ALL' && item.status !== state.filters.status) return false;
+        if (q) {
+          const defanged = formatIOC(item.value, item.type);
+          const hay = `${item.value} ${defanged} ${item.threat} ${item.mitreId} ${item.asn} ${item.countryName} ${item.type}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderKPIs() {
+      const total = state.iocs.length;
+      const activeIOCs = state.iocs.filter(i => i.status !== 'FP');
+      const totalHits = activeIOCs.reduce((acc, i) => acc + (i.hits || 1), 0);
+      const blockedCount = activeIOCs.filter(i => i.status === 'BLOCKED').length;
+      const blockedPct = activeIOCs.length ? Math.round((blockedCount / activeIOCs.length) * 100) : 0;
+      const openCritHigh = state.iocs.filter(i => (i.sev === 'CRITICAL' || i.sev === 'HIGH') && i.status === 'OPEN').length;
+      const escalated = state.iocs.filter(i => i.status === 'ESCALATED').length;
+      const fp = state.iocs.filter(i => i.status === 'FP').length;
+      const enabledRules = state.rules.filter(r => r.enabled).length;
+
+      document.getElementById('kpi-total-iocs').textContent = total;
+      document.getElementById('kpi-splunk-hits').textContent = totalHits;
+      document.getElementById('kpi-blocked-ratio').textContent = `${blockedPct}% blocked`;
+      document.getElementById('kpi-open-crit').textContent = openCritHigh;
+      document.getElementById('kpi-escalated-sub').textContent = `${escalated} escalated to Tier 2 · ${fp} false positives`;
+      document.getElementById('kpi-active-rules').textContent = `${enabledRules} / ${state.rules.length}`;
+      document.getElementById('chart-total-label').textContent = `${total} unique IOCs`;
+
+      const srcCounts = { OTX: 0, ABUSE: 0, URLHAUS: 0 };
+      state.iocs.forEach(i => { if (srcCounts[i.source] !== undefined) srcCounts[i.source]++; });
+      const maxSrc = Math.max(srcCounts.OTX, srcCounts.ABUSE, srcCounts.URLHAUS, 1);
+      document.getElementById('cnt-otx').textContent = srcCounts.OTX;
+      document.getElementById('cnt-abuse').textContent = srcCounts.ABUSE;
+      document.getElementById('cnt-urlhaus').textContent = srcCounts.URLHAUS;
+      document.getElementById('bar-otx').style.width = `${(srcCounts.OTX / maxSrc) * 100}%`;
+      document.getElementById('bar-abuse').style.width = `${(srcCounts.ABUSE / maxSrc) * 100}%`;
+      document.getElementById('bar-urlhaus').style.width = `${(srcCounts.URLHAUS / maxSrc) * 100}%`;
+
+      const sevCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+      state.iocs.forEach(i => { if (sevCounts[i.sev] !== undefined) sevCounts[i.sev]++; });
+      document.getElementById('sev-cnt-crit').textContent = sevCounts.CRITICAL;
+      document.getElementById('sev-cnt-high').textContent = sevCounts.HIGH;
+      document.getElementById('sev-cnt-med').textContent = sevCounts.MEDIUM;
+      document.getElementById('sev-cnt-low').textContent = sevCounts.LOW;
+    }
+
+    function renderTable(highlightId = null) {
+      const tbody = document.getElementById('feed-tbody');
+      const allRows = getFilteredIOCs();
+      const totalPages = Math.max(1, Math.ceil(allRows.length / state.pageSize));
+      if (state.page > totalPages) state.page = totalPages;
+      const start = (state.page - 1) * state.pageSize;
+      const rows = allRows.slice(start, start + state.pageSize);
+      document.getElementById('table-count-badge').textContent = `${allRows.length} of ${state.iocs.length}`;
+      document.getElementById('page-indicator').textContent = `Page ${state.page} / ${totalPages}`;
+      document.getElementById('btn-prev-page').disabled = state.page <= 1;
+      document.getElementById('btn-next-page').disabled = state.page >= totalPages;
+
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-10 text-center text-slate-400 font-mono text-xs">No IOCs match the current filter criteria.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(ioc => {
+        const displayVal = formatIOC(ioc.value, ioc.type);
+        const shortVal = displayVal.length > 26 ? displayVal.slice(0, 24) + '…' : displayVal;
+        const src = sourceLabel(ioc.source);
+        const isSelected = state.selectedIocId === ioc.id;
+        return `
+          <tr data-ioc-id="${ioc.id}" tabindex="0" class="cursor-pointer transition-colors hover:bg-elevated/70 focus:outline-none focus:bg-sky-500/15 ${isSelected ? 'bg-sky-500/10' : ''} ${highlightId === ioc.id ? 'row-enter' : ''}">
+            <td class="py-2.5 px-2.5 font-mono text-[11px] text-slate-400 whitespace-nowrap">${escapeHtml(ioc.time)}</td>
+            <td class="py-2.5 px-2.5 whitespace-nowrap" title="${escapeHtml(displayVal)}">
+              <div class="font-mono text-[11px] text-slate-100">${escapeHtml(shortVal)}</div>
+              <div class="font-mono text-[11px] text-slate-400">${escapeHtml(ioc.type)} · ${ioc.hits} hits</div>
+            </td>
+            <td class="py-2.5 px-2.5">
+              <div class="text-slate-200 font-medium truncate max-w-[195px]">${escapeHtml(ioc.threat)}</div>
+              <div class="text-[11px] font-mono text-sky-400">${escapeHtml(ioc.mitreId)} · ${escapeHtml(ioc.countryName)}</div>
+            </td>
+            <td class="py-2.5 px-2.5 whitespace-nowrap">
+              <span class="inline-block px-1.5 py-0.5 rounded border text-[11px] font-mono ${src.cls}">${src.name}</span>
+              <div class="font-mono text-[11px] text-slate-400 mt-0.5">${ioc.confidence}% conf</div>
+            </td>
+            <td class="py-2.5 px-2.5 whitespace-nowrap">
+              <span class="inline-block px-2 py-0.5 rounded text-[11px] font-mono font-semibold ${sevBadgeClass(ioc.sev)}">${ioc.sev}</span>
+            </td>
+            <td class="py-2.5 px-2.5 whitespace-nowrap text-right">${statusBadge(ioc.status)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderLogs() {
+      const container = document.getElementById('telemetry-log');
+      const filtered = state.logFilter === 'ALL' ? state.logs : state.logs.filter(l => l.level === 'ALERT');
+      container.innerHTML = filtered.map(entry => {
+        let color = 'text-sky-300';
+        if (entry.level === 'ALERT') color = 'text-rose-400';
+        else if (entry.level === 'OK') color = 'text-emerald-400';
+        else if (entry.level === 'WARN') color = 'text-amber-300';
+        return `<div><span class="text-slate-400">[${entry.time}]</span> <span class="${color}">[${entry.level}]</span> <span class="text-slate-200">${escapeHtml(entry.msg)}</span></div>`;
+      }).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function renderCharts() {
+      const sevCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+      state.iocs.forEach(i => { if (sevCounts[i.sev] !== undefined) sevCounts[i.sev]++; });
+
+      if (!velocityChart) {
+        const ctxV = document.getElementById('velocityChart').getContext('2d');
+        velocityChart = new Chart(ctxV, {
+          type: 'line',
+          data: {
+            labels: ['-11h','-10h','-9h','-8h','-7h','-6h','-5h','-4h','-3h','-2h','-1h','Now'],
+            datasets: [{
+              label: 'Simulated Hits',
+              data: [...state.velocityData],
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56, 189, 248, 0.14)',
+              borderWidth: 2,
+              tension: 0.35,
+              fill: true,
+              pointRadius: 2.5,
+              pointBackgroundColor: '#38bdf8'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: 'rgba(30,44,68,0.4)' }, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } } },
+              y: { grid: { color: 'rgba(30,44,68,0.4)' }, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, beginAtZero: true }
+            }
+          }
+        });
+      } else {
+        velocityChart.data.datasets[0].data = [...state.velocityData];
+        velocityChart.update('none');
+      }
+
+      if (!severityChart) {
+        const ctxS = document.getElementById('severityChart').getContext('2d');
+        severityChart = new Chart(ctxS, {
+          type: 'doughnut',
+          data: {
+            labels: ['Critical', 'High', 'Medium', 'Low'],
+            datasets: [{
+              data: [sevCounts.CRITICAL, sevCounts.HIGH, sevCounts.MEDIUM, sevCounts.LOW],
+              backgroundColor: ['#f43f5e', '#f59e0b', '#eab308', '#10b981'],
+              borderColor: '#0d1424',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '68%',
+            plugins: { legend: { display: false } }
+          }
+        });
+      } else {
+        severityChart.data.datasets[0].data = [sevCounts.CRITICAL, sevCounts.HIGH, sevCounts.MEDIUM, sevCounts.LOW];
+        severityChart.update('none');
+      }
+    }
+
+    function renderRules() {
+      const grid = document.getElementById('rules-grid');
+      const activeCount = state.rules.filter(r => r.enabled).length;
+      document.getElementById('active-rules-count').textContent = `${activeCount} / ${state.rules.length} Rules Active`;
+
+      grid.innerHTML = state.rules.map(rule => `
+        <div class="rounded-xl bg-surface border border-line p-4 flex flex-col justify-between gap-3 ${rule.enabled ? '' : 'opacity-65'}">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-mono text-xs font-semibold text-slate-100">${escapeHtml(rule.name)}</h3>
+                <span class="px-1.5 py-0.5 rounded text-[11px] font-mono ${sevBadgeClass(rule.severity)}">${rule.severity}</span>
+              </div>
+              <p class="text-[11px] font-mono text-slate-400 mt-1">${escapeHtml(rule.mitre)} · ${escapeHtml(rule.schedule)} · ${rule.hits24h} hits (24h)</p>
+            </div>
+            <button data-rule-toggle="${rule.id}" type="button" class="px-2.5 py-1 rounded-md text-[11px] font-mono border transition-colors ${rule.enabled ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35' : 'bg-canvas text-slate-300 border-line'}">
+              ${rule.enabled ? 'ENABLED' : 'PAUSED'}
+            </button>
+          </div>
+          <div class="rounded-lg bg-[#050810] border border-line overflow-hidden">
+            <div class="px-3 py-1.5 border-b border-line flex justify-between items-center bg-elevated/40">
+              <span class="text-[11px] font-mono text-slate-400">SPL CORRELATION QUERY</span>
+              <button data-rule-copy="${rule.id}" type="button" class="text-[11px] font-mono text-sky-400 hover:text-sky-300">Copy SPL</button>
+            </div>
+            <pre class="p-3 font-mono text-[11px] text-emerald-300/90 overflow-x-auto whitespace-pre-wrap leading-relaxed">${escapeHtml(rule.spl)}</pre>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 5. D3 VECTOR WORLD MAP (world-atlas TopoJSON)
+    // =========================================================================
+    async function initWorldMap() {
+      const svgEl = document.getElementById('world-map-svg');
+      try {
+        const res = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json');
+        if (!res.ok) throw new Error('Map fetch failed');
+        state.worldTopo = await res.json();
+        drawWorldMap();
+      } catch (err) {
+        svgEl.innerHTML = `<text x="50%" y="50%" text-anchor="middle" fill="#94a3b8" font-family="JetBrains Mono" font-size="11">World map layer offline — Geo-IP enrichment active in feed table.</text>`;
+      }
+      window.addEventListener('resize', () => { if (state.worldTopo) drawWorldMap(); });
+    }
+
+    function drawWorldMap() {
+      if (!state.worldTopo || typeof d3 === 'undefined' || typeof topojson === 'undefined') return;
+      const container = document.getElementById('world-map-container');
+      const width = container.clientWidth || 640;
+      const height = container.clientHeight || 340;
+      const svg = d3.select('#world-map-svg');
+      svg.selectAll('*').remove();
+      svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+      const countries = topojson.feature(state.worldTopo, state.worldTopo.objects.countries);
+      const projection = d3.geoNaturalEarth1().fitExtent([[12, 10], [width - 12, height - 10]], countries);
+      const path = d3.geoPath().projection(projection);
+
+      svg.append('g')
+        .selectAll('path')
+        .data(countries.features)
+        .join('path')
+        .attr('d', path)
+        .attr('fill', '#111c30')
+        .attr('stroke', '#1e2c44')
+        .attr('stroke-width', 0.6);
+
+      const grouped = {};
+      state.iocs.forEach(ioc => {
+        if (!ioc.coords) return;
+        const key = ioc.countryName;
+        if (!grouped[key]) grouped[key] = { countryName: key, country: ioc.country, coords: ioc.coords, count: 0, critical: 0, topThreat: ioc.threat };
+        grouped[key].count++;
+        if (ioc.sev === 'CRITICAL' || ioc.sev === 'HIGH') grouped[key].critical++;
+      });
+
+      const tooltip = document.getElementById('map-tooltip');
+      const nodes = Object.values(grouped);
+
+      const gDots = svg.append('g');
+      nodes.forEach(node => {
+        const pt = projection(node.coords);
+        if (!pt) return;
+        const color = node.critical > 0 ? '#f43f5e' : '#f59e0b';
+        const r = Math.min(4 + node.count * 1.4, 9);
+
+        gDots.append('circle')
+          .attr('cx', pt[0]).attr('cy', pt[1]).attr('r', r + 4)
+          .attr('fill', color).attr('opacity', 0.22);
+
+        gDots.append('circle')
+          .attr('cx', pt[0]).attr('cy', pt[1]).attr('r', r)
+          .attr('fill', color).attr('stroke', '#070b14').attr('stroke-width', 1.2)
+          .style('cursor', 'pointer')
+          .on('mouseenter', function() {
+            tooltip.style.display = 'block';
+            tooltip.style.left = Math.min(pt[0] + 12, width - 175) + 'px';
+            tooltip.style.top = Math.max(pt[1] - 42, 8) + 'px';
+            tooltip.innerHTML = `<div class="font-mono font-semibold text-sky-300">${escapeHtml(node.countryName)} (${escapeHtml(node.country)})</div><div class="text-slate-300 mt-0.5">${node.count} IOC(s) · ${node.critical} Crit/High</div><div class="text-slate-400 text-[11px] mt-0.5 truncate">${escapeHtml(node.topThreat)}</div>`;
+          })
+          .on('mouseleave', () => { tooltip.style.display = 'none'; });
+      });
+    }
+
+    // =========================================================================
+    // 6. INVESTIGATION DRAWER & TRIAGE ACTIONS
+    // =========================================================================
+    function renderDrawerQuery(ioc) {
+      const pre = document.getElementById('drawer-spl');
+      const splBtn = document.getElementById('qtab-spl');
+      const kqlBtn = document.getElementById('qtab-kql');
+      if (state.drawerQueryLang === 'KQL') {
+        pre.textContent = buildKqlQuery(ioc);
+        kqlBtn.className = 'px-2 py-0.5 rounded text-[11px] font-mono bg-sky-500/15 text-sky-300 border border-sky-500/35';
+        splBtn.className = 'px-2 py-0.5 rounded text-[11px] font-mono bg-surface text-slate-400 border border-line hover:text-slate-200';
+      } else {
+        pre.textContent = buildSplQuery(ioc);
+        splBtn.className = 'px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/35';
+        kqlBtn.className = 'px-2 py-0.5 rounded text-[11px] font-mono bg-surface text-slate-400 border border-line hover:text-slate-200';
+      }
+    }
+
+    function openDrawer(iocId) {
+      const ioc = state.iocs.find(i => i.id === iocId);
+      if (!ioc) return;
+      if (!state.selectedIocId) state.lastFocusedEl = document.activeElement;
+      state.selectedIocId = iocId;
+
+      document.getElementById('drawer-ioc-title').textContent = formatIOC(ioc.value, ioc.type);
+      const sevEl = document.getElementById('drawer-sev-badge');
+      sevEl.textContent = ioc.sev;
+      sevEl.className = `px-2 py-0.5 rounded text-[11px] font-mono font-semibold ${sevBadgeClass(ioc.sev)}`;
+      document.getElementById('drawer-status-badge').textContent = ioc.status;
+
+      document.getElementById('drawer-threat').textContent = ioc.threat;
+      document.getElementById('drawer-conf-val').textContent = `${ioc.confidence}%`;
+      document.getElementById('drawer-conf-bar').style.width = `${ioc.confidence}%`;
+      document.getElementById('drawer-geo').textContent = `${ioc.countryName} · ${ioc.asn}`;
+      document.getElementById('drawer-asset').textContent = ioc.asset;
+      document.getElementById('drawer-mitre-id').textContent = ioc.mitreId;
+      document.getElementById('drawer-mitre-tactic').textContent = ioc.mitreTactic;
+      document.getElementById('drawer-mitre-desc').textContent = ioc.mitreDesc;
+      document.getElementById('drawer-notes').textContent = ioc.notes;
+      document.getElementById('btn-action-block-label').textContent = blockActionLabel(ioc.type);
+      renderDrawerQuery(ioc);
+
+      document.getElementById('drawer-backdrop').classList.remove('hidden');
+      document.getElementById('ioc-drawer').classList.remove('translate-x-full');
+      document.getElementById('btn-close-drawer').focus();
+      renderTable();
+    }
+
+    function closeDrawer() {
+      state.selectedIocId = null;
+      document.getElementById('drawer-backdrop').classList.add('hidden');
+      document.getElementById('ioc-drawer').classList.add('translate-x-full');
+      renderTable();
+      if (state.lastFocusedEl && typeof state.lastFocusedEl.focus === 'function') {
+        state.lastFocusedEl.focus();
+      }
+    }
+
+    function applyTriageAction(newStatus, label) {
+      if (!state.selectedIocId) return;
+      const ioc = state.iocs.find(i => i.id === state.selectedIocId);
+      if (!ioc) return;
+      ioc.status = newStatus;
+      if (newStatus === 'BLOCKED') ioc.action = 'BLOCKED';
+      saveStatuses();
+      addLog('OK', `Audit log: ${ioc.value} (${ioc.type}) set to ${newStatus} [${ioc.id}]`);
+      showToast(`${ioc.id} updated: ${label}`);
+      renderAll();
+      openDrawer(ioc.id);
+    }
+
+    // =========================================================================
+    // 7. LIVE STREAM & EXPORTS (FIXED STIX 2.1 & CSV ESCAPING)
+    // =========================================================================
+    function pullNextIOC() {
+      const next = STREAM_QUEUE[state.streamQueueIdx % STREAM_QUEUE.length];
+      state.streamQueueIdx++;
+      const exists = state.iocs.find(i => i.value === next.value);
+      if (exists) {
+        exists.hits += Math.floor(Math.random() * 5) + 2;
+        exists.time = utcNow();
+        state.velocityData[state.velocityData.length - 1] += 3;
+        addLog('INFO', `Dedup cache hit for ${exists.value} — incremented hits (${exists.hits})`);
+        renderAll(exists.id);
+        return;
+      }
+      const fresh = { ...next, time: utcNow() };
+      state.iocs.unshift(fresh);
+      state.velocityData.shift();
+      state.velocityData.push(Math.floor(Math.random() * 25) + 60);
+      addLog(fresh.sev === 'CRITICAL' ? 'ALERT' : 'WARN', `Simulated ingest: ${fresh.value} (${fresh.source}) — ${fresh.threat} [${fresh.mitreId}]`);
+      renderAll(fresh.id);
+    }
+
+    function startStream() {
+      clearInterval(state.streamTimer);
+      state.streamTimer = setInterval(() => {
+        if (state.streaming) pullNextIOC();
+      }, 9000);
+    }
+
+    function exportCSV() {
+      const rows = getFilteredIOCs();
+      const header = ['ID','Time_UTC','IOC_Value','Type','Threat','MITRE_ATT&CK','Source','Confidence','Severity','Status','Country','ASN'];
+      const lines = [header.join(',')].concat(
+        rows.map(r => [
+          csvCell(r.id), csvCell(r.time), csvCell(r.value), csvCell(r.type),
+          csvCell(r.threat), csvCell(r.mitreId), csvCell(r.source), csvCell(r.confidence),
+          csvCell(r.sev), csvCell(r.status), csvCell(r.countryName), csvCell(r.asn)
+        ].join(','))
+      );
+      downloadBlob(lines.join('\n'), 'cti-threat-feed.csv', 'text/csv');
+      showToast(`Exported ${rows.length} IOCs to CSV`);
+    }
+
+    function stixPattern(ioc) {
+      const escaped = String(ioc.value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      if (ioc.type === 'IPv4') return `[ipv4-addr:value = '${escaped}']`;
+      if (ioc.type === 'Domain') return `[domain-name:value = '${escaped}']`;
+      if (ioc.type === 'SHA256') return `[file:hashes.'SHA-256' = '${escaped}']`;
+      return `[url:value = '${escaped}']`;
+    }
+
+    function exportSTIX() {
+      const rows = getFilteredIOCs();
+      const nowIso = new Date().toISOString();
+      const bundle = {
+        type: 'bundle',
+        id: `bundle--${generateUUIDv4()}`,
+        objects: rows.map(r => ({
+          type: 'indicator',
+          spec_version: '2.1',
+          id: `indicator--${generateUUIDv4()}`,
+          created: nowIso,
+          modified: nowIso,
+          valid_from: nowIso,
+          name: r.threat,
+          pattern_type: 'stix',
+          pattern: stixPattern(r),
+          confidence: r.confidence,
+          labels: [r.sev.toLowerCase(), r.source.toLowerCase()],
+          external_references: [
+            {
+              source_name: 'mitre-attack',
+              external_id: r.mitreId
+            }
+          ]
+        }))
+      };
+      downloadBlob(JSON.stringify(bundle, null, 2), 'cti-stix-2.1-bundle.json', 'application/json');
+      showToast(`Exported ${rows.length} indicators as STIX 2.1 JSON`);
+    }
+
+    function downloadBlob(content, filename, mime) {
+      const blob = new Blob([content], { type: mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function renderAll(highlightId = null) {
+      renderKPIs();
+      renderTable(highlightId);
+      renderCharts();
+      renderRules();
+      if (state.worldTopo) drawWorldMap();
+    }
+
+    // =========================================================================
+    // 8. EVENT WIRING
+    // =========================================================================
+    function switchTab(tab) {
+      state.activeTab = tab;
+      ['overview', 'rules', 'pipeline'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tab);
+      });
+      document.querySelectorAll('.tab-btn, .tab-btn-mobile').forEach(btn => {
+        const active = btn.dataset.tab === tab;
+        if (btn.hasAttribute('role')) btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        btn.className = btn.classList.contains('tab-btn-mobile')
+          ? `tab-btn-mobile px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap ${active ? 'bg-elevated text-sky-300 border border-sky-500/30' : 'text-slate-400 border border-transparent'}`
+          : `tab-btn px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${active ? 'bg-elevated text-sky-300 border border-sky-500/30' : 'text-slate-400 hover:text-slate-200 border border-transparent'}`;
+      });
+      if (tab === 'overview' && state.worldTopo) setTimeout(drawWorldMap, 50);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      const tick = () => { document.getElementById('utc-clock').textContent = utcNow() + ' UTC'; };
+      tick();
+      setInterval(tick, 1000);
+
+      document.querySelectorAll('.tab-btn, .tab-btn-mobile').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.getElementById('btn-toggle-stream').addEventListener('click', () => {
+        state.streaming = !state.streaming;
+        document.getElementById('btn-toggle-stream-text').textContent = state.streaming ? 'Pause' : 'Resume';
+        document.getElementById('stream-label').textContent = state.streaming ? 'SIM SYNC' : 'PAUSED';
+        const dot = document.getElementById('stream-dot');
+        dot.classList.toggle('bg-emerald-400', state.streaming);
+        dot.classList.toggle('live-dot', state.streaming);
+        dot.classList.toggle('bg-amber-400', !state.streaming);
+        addLog('INFO', state.streaming ? 'Simulated feed collector resumed' : 'Simulated feed collector paused by analyst');
+      });
+
+      document.getElementById('btn-ingest-now').addEventListener('click', () => {
+        pullNextIOC();
+        showToast('Pulled & correlated simulated threat indicator');
+      });
+
+      document.getElementById('btn-defang').addEventListener('click', () => {
+        state.defang = !state.defang;
+        document.getElementById('defang-label').textContent = `Defang: ${state.defang ? 'ON' : 'OFF'}`;
+        renderTable();
+        if (state.selectedIocId) openDrawer(state.selectedIocId);
+      });
+
+      document.getElementById('btn-export-csv').addEventListener('click', exportCSV);
+      document.getElementById('btn-export-stix').addEventListener('click', exportSTIX);
+
+      document.getElementById('btn-prev-page').addEventListener('click', () => {
+        if (state.page > 1) { state.page--; renderTable(); }
+      });
+      document.getElementById('btn-next-page').addEventListener('click', () => {
+        const totalPages = Math.max(1, Math.ceil(getFilteredIOCs().length / state.pageSize));
+        if (state.page < totalPages) { state.page++; renderTable(); }
+      });
+
+      document.getElementById('filter-search').addEventListener('input', (e) => {
+        state.filters.search = e.target.value;
+        state.page = 1;
+        renderTable();
+      });
+      document.getElementById('filter-source').addEventListener('change', (e) => {
+        state.filters.source = e.target.value;
+        state.page = 1;
+        renderTable();
+      });
+      document.getElementById('filter-status').addEventListener('change', (e) => {
+        state.filters.status = e.target.value;
+        state.page = 1;
+        renderTable();
+      });
+      document.getElementById('sev-pills').addEventListener('click', (e) => {
+        const btn = e.target.closest('.sev-pill');
+        if (!btn) return;
+        state.filters.sev = btn.dataset.sev;
+        state.page = 1;
+        document.querySelectorAll('.sev-pill').forEach(b => {
+          const on = b.dataset.sev === state.filters.sev;
+          b.className = `sev-pill px-2.5 py-1 rounded text-[11px] font-mono ${on ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40' : 'bg-surface text-slate-300 border border-line hover:text-slate-100'}`;
+        });
+        renderTable();
+      });
+
+      const tbody = document.getElementById('feed-tbody');
+      tbody.addEventListener('click', (e) => {
+        const tr = e.target.closest('tr[data-ioc-id]');
+        if (tr) openDrawer(tr.dataset.iocId);
+      });
+      tbody.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const tr = e.target.closest('tr[data-ioc-id]');
+          if (tr) { e.preventDefault(); openDrawer(tr.dataset.iocId); }
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && state.selectedIocId) closeDrawer();
+      });
+
+      document.getElementById('btn-close-drawer').addEventListener('click', closeDrawer);
+      document.getElementById('drawer-backdrop').addEventListener('click', closeDrawer);
+      document.getElementById('qtab-spl').addEventListener('click', () => {
+        state.drawerQueryLang = 'SPL';
+        const ioc = state.iocs.find(i => i.id === state.selectedIocId);
+        if (ioc) renderDrawerQuery(ioc);
+      });
+      document.getElementById('qtab-kql').addEventListener('click', () => {
+        state.drawerQueryLang = 'KQL';
+        const ioc = state.iocs.find(i => i.id === state.selectedIocId);
+        if (ioc) renderDrawerQuery(ioc);
+      });
+      document.getElementById('btn-copy-spl').addEventListener('click', () => {
+        copyText(document.getElementById('drawer-spl').textContent, `${state.drawerQueryLang} query copied`);
+      });
+      document.getElementById('btn-action-block').addEventListener('click', () => {
+        const ioc = state.iocs.find(i => i.id === state.selectedIocId);
+        applyTriageAction('BLOCKED', ioc ? `${blockActionLabel(ioc.type)} applied` : 'Blocked');
+      });
+      document.getElementById('btn-action-escalate').addEventListener('click', () => applyTriageAction('ESCALATED', 'Escalated to Tier-2 SOC queue'));
+      document.getElementById('btn-action-fp').addEventListener('click', () => applyTriageAction('FP', 'Closed as False Positive'));
+
+      document.querySelectorAll('.log-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.logFilter = btn.dataset.logfilter;
+          document.querySelectorAll('.log-filter-btn').forEach(b => {
+            const on = b.dataset.logfilter === state.logFilter;
+            b.className = `log-filter-btn px-2 py-0.5 rounded text-[11px] font-mono ${on ? 'bg-sky-500/20 text-sky-300 border border-sky-500/35' : 'bg-elevated text-slate-300 border border-line'}`;
+          });
+          renderLogs();
+        });
+      });
+      document.getElementById('btn-clear-log').addEventListener('click', () => {
+        state.logs = [];
+        renderLogs();
+      });
+
+      document.getElementById('rules-grid').addEventListener('click', (e) => {
+        const toggleBtn = e.target.closest('button[data-rule-toggle]');
+        if (toggleBtn) {
+          const rule = state.rules.find(r => r.id === toggleBtn.dataset.ruleToggle);
+          if (rule) {
+            rule.enabled = !rule.enabled;
+            addLog('INFO', `Splunk rule ${rule.name} ${rule.enabled ? 'ENABLED' : 'PAUSED'}`);
+            renderKPIs();
+            renderRules();
+          }
+          return;
+        }
+        const copyBtn = e.target.closest('button[data-rule-copy]');
+        if (copyBtn) {
+          const rule = state.rules.find(r => r.id === copyBtn.dataset.ruleCopy);
+          if (rule) copyText(rule.spl, `Copied SPL for ${rule.name}`);
+        }
+      });
+
+      document.getElementById('manual-ioc-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = document.getElementById('input-ioc-val').value.trim();
+        const type = document.getElementById('input-ioc-type').value;
+        const sev = document.getElementById('input-ioc-sev').value;
+        const threat = document.getElementById('input-ioc-threat').value.trim() || 'Manual Threat Indicator';
+        if (!validateIOCInput(val, type)) {
+          showToast(`Invalid ${type} format — check indicator syntax`);
+          return;
+        }
+        const newIoc = {
+          id: `IOC-${2500 + state.iocs.length}`,
+          time: utcNow(),
+          value: val,
+          type,
+          threat,
+          source: 'MANUAL',
+          confidence: 90,
+          sev,
+          action: 'ALLOWED',
+          status: 'OPEN',
+          country: 'N/A',
+          countryName: 'Unenriched',
+          coords: null,
+          asn: 'Manual Lookup (No Geo-IP)',
+          asset: 'splunk-adhoc-search (1 hit)',
+          hits: 1,
+          mitreId: 'T1071',
+          mitreTactic: 'Command and Control · Application Layer Protocol',
+          mitreDesc: 'Analyst-submitted indicator correlated against Splunk firewall and proxy indices.',
+          notes: 'Injected manually via CTI Automation Platform lookup console.'
+        };
+        state.iocs.unshift(newIoc);
+        saveStatuses();
+        addLog('ALERT', `Manual IOC correlated: ${val} (${type} · ${sev})`);
+        document.getElementById('input-ioc-val').value = '';
+        state.page = 1;
+        renderAll(newIoc.id);
+        switchTab('overview');
+        showToast(`Correlated ${val} in Simulated Threat Feed`);
+      });
+
+      addLog('OK', 'CTI Automation Platform (Simulated Demo) initialized');
+      addLog('INFO', 'Loaded RFC-5737 / RFC-2606 demo indicators across OTX, AbuseIPDB, and URLhaus');
+      addLog('ALERT', 'Simulated hit: 203.0.113.100 (Cobalt Strike C2) — ALLOWED on proxy-corp-01');
+
+      renderAll();
+      initWorldMap();
+      startStream();
+    });
+  </script>
 </body>
 </html>
